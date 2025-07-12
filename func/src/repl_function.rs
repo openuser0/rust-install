@@ -35,14 +35,12 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
     */
 
     /* 检测 rust 工具是否存在 */
-    if let Ok(_) = Command::new("rustup").arg("--version").output().await {
-        println!("rust 工具已存在");
-        return Ok(());
-    }else { println!("未安装rust,现在开始安装"); () }
+    if let Ok(_) = Command::new("rustup").arg("--version").output().await { println!("rust 工具已存在"); return Ok(()); }else { println!("未安装rust,现在开始安装"); () }
 
     /* 定义 shell 配置文件路径 */
     let bash = res_path(".bashrc");
     let fish = res_path(".config/fish/config.fish");
+    /* 合并 $HOME 路径和 bash fish 的配置文件路径为 PathBuf */
 
     /* 定义 shell 镜像 */
     let bash_https = "export RUSTUP_UPDATE_ROOT=https://mirrors.tuna.tsinghua.edu.cn/rustup/rustup\nexport RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup";
@@ -54,7 +52,7 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
 
 
     /* 安装 rustup */
-    let mut cmd = Command::new("sh")
+    let mut cmd = Command::new("bash")
         .arg("-c")
         .arg(r#"curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh"#)
         .stdout(Stdio::inherit())/* 输出打印到终端 */
@@ -86,18 +84,14 @@ fn res_path(path:&str) -> PathBuf {
 async fn shell_https(name:&str, path:PathBuf, https:&str) -> Result<(), Box<dyn std::error::Error>>{
     if let Ok(_) = Command::new(name).arg("--version").output().await {
         /* 增量写入打开配置文件 */
-        let mut file = if let Ok(e) = OpenOptions::new().append(true).create(true).open(&path).await {
-            e
-        }else { println!("配置文件打开失败"); return Err("配置文件打开失败".into()) };
+        let mut file = if let Ok(e) = OpenOptions::new().append(true).create(true).open(&path).await {e}else { println!("配置文件打开失败"); return Err("配置文件打开失败".into()) };
 
         /* 写入镜像配置 */
         file.write_all(https.as_bytes()).await?;
 
         /* 让镜像立刻生效 */
         let path = format!(r#"source {}"#, path.display());
-        if let Ok(_) = Command::new("sh").arg("-c").arg(&path).output().await {
-            println!("{}镜像已生效",name);
-        }else { println!("镜像生效失败") }
+        if let Ok(_) = Command::new("bash").arg("-c").arg(&path).output().await { println!("{}镜像已生效",name); }else { println!("镜像生效失败") }
     };
 
     Ok(())
