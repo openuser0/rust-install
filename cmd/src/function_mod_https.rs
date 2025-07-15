@@ -29,9 +29,6 @@ use tokio::process::Command;
 /* 代码仓库跳转 */
 pub async fn jump() -> Result<(), Box<dyn std::error::Error>> {
     /* 跳转代码仓库 */
-
-    /* linux 专属 */
-    #[cfg(target_os = "linux")]
     cmd(r#"xdg-open https://gitee.com/songjiaqicode/rust-installation"#,"web启动").await?;
     /* 这会调用 xdg-open(桌面通用web接口) 打开代码仓库 */
 
@@ -95,7 +92,6 @@ pub async fn update() -> Result<(), Box<dyn std::error::Error>> {
 /* 删除 uninstall */
 pub async fn uninstall() -> Result<(), Box<dyn std::error::Error>> {
     /* 删除 uninstall */
-    #[cfg(target_os = "linux")]
     cmd(r#"rustup self uninstall"#,"uninstall").await?;
 
     Ok(())
@@ -114,13 +110,25 @@ pub async fn shell_tap() -> Result<(), Box<dyn std::error::Error>> {
     let mut file = if let Ok(e) = file { println!("fish tap 文件创建成功"); e }else { println!("fish tap 文件创建失败"); std::process::exit(0) };
 
     /* 定义写入内容 */
-    let write = b"complete -c rust-installation -f -a 'h v c cargo zigbuild update uninstall tap'";
+    let write = b"complete -c rust-installation -f -a 'h v c cargo zigbuild update uninstall tap list'";
 
     /* 写入文件 */
     let _ = file.write_all(write).await?;
 
     /* 立刻激活 */
-    Command::new("bash").arg("-c").arg(r#"source $HOME/.config/fish/completions/rust-installation.fish"#).spawn()?;
+    Command::new("fish").arg("-c").arg(r#"source $HOME/.config/fish/completions/rust-installation.fish"#).spawn()?;
+
+    Ok(())
+}
+
+/* 列出所有 rust 版本 */
+pub async fn list() -> Result<(), Box<dyn std::error::Error>> {
+    /* 判断 rust 存在性 */
+    let res = Command::new("rustup").arg("--version").stdout(Stdio::null()).stderr(Stdio::null()).spawn();
+    if let Ok(_) = res {}else { println!("rust 不存在 , 执行 rust-installation 命令安装"); std::process::exit(0) };
+
+    /* 列出所有 rust 版本 */
+    cmd(r#"rustup show"#,"list").await?;
 
     Ok(())
 }
@@ -170,7 +178,6 @@ async fn cargo_bool() -> Result<PathBuf, Box<dyn std::error::Error>> {
         for i in https {
             /* 判断 buf 是否完整包含 https 的成员切片  */
             if !buf.contains(i) {
-
                 /* 不完整处理 */
                 all = false; break;
                 /* 将存在性变量改为 false 并退出遍历 */
@@ -179,7 +186,7 @@ async fn cargo_bool() -> Result<PathBuf, Box<dyn std::error::Error>> {
 
         /* 根据存在性变量执行对应的操作 */
         if all { return Err("镜像已存在".into()) }
-        /* true 返回直 , false 返回错误 */
+        /* true 返回值 , false 返回错误 */
     };
 
     /* 返回 .cargo 配置文件路径 */
@@ -197,7 +204,7 @@ async fn cmd(shell:&str, pr:&str) -> Result<(), Box<dyn std::error::Error>> {
 
     /* 堵塞等待安装完成 */
     let res_ins = ins.wait().await?;
-    if res_ins.success() { println!("{} 成功",pr) }else { println!("{} 失败",pr) }
+    if res_ins.success() { println!("\n{} 成功",pr) }else { println!("{} 失败",pr) }
 
     Ok(())
 }

@@ -49,6 +49,7 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>>{
                 println!("update , 更新 rust");
                 println!("uninstall , 删除 rust");
                 println!("tap , 开启 fish 的 tap 补全");
+                println!("list , 列出所有 rust 版本");
 
                 /* 退出程序 */
                 std::process::exit(0)
@@ -58,7 +59,7 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>>{
             /* 版本号 */
             "v" => {
                 /* 打印版本号 */
-                println!("1.0.0");
+                println!("1.2.0");
 
                 /* 退出程序 */
                 std::process::exit(0)
@@ -125,6 +126,15 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>>{
             /* 开启 fish 的 tap 补全 */
             "tap" => {
                 let _ = function_mod_https::shell_tap().await;
+
+                /* 退出程序 */
+                std::process::exit(0)
+                /* 防止影响到 func 包中的模块 */
+            }
+
+            /* 列出所有 rust 版本 */
+            "list" => {
+                let _ = function_mod_https::list().await;
 
                 /* 退出程序 */
                 std::process::exit(0)
