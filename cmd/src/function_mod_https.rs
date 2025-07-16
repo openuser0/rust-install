@@ -67,13 +67,21 @@ index = "sparse+https://mirrors.tuna.tsinghua.edu.cn/crates.io-index/"
     Ok(())
 }
 
-/* zigbuild 构建工具 */
+/* 添加 zigbuild 构建工具 */
 pub async fn zigbuild() -> Result<(), Box<dyn std::error::Error>> {
     /* cargo 镜像存在性检测 */
     if let Err(_) = cargo_bool().await{}else { println!("cargo 镜像不存在,请执行 rust-installation cargo 命令添加"); std::process::exit(0) }
 
     /* 安装 zigbuild */
     cmd(r#"cargo install --locked cargo-zigbuild"#,"zigbuild").await?;
+
+    Ok(())
+}
+
+/* 删除 zigbuild 构建工具 */
+pub async fn remove_zigbuild() -> Result<(), Box<dyn std::error::Error>> {
+    /* 删除 zigbuild */
+    cmd(r#"cargo uninstall cargo-zigbuild"#,"zigbuild").await?;
 
     Ok(())
 }
@@ -110,7 +118,7 @@ pub async fn shell_tap() -> Result<(), Box<dyn std::error::Error>> {
     let mut file = if let Ok(e) = file { println!("fish tap 文件创建成功"); e }else { println!("fish tap 文件创建失败"); std::process::exit(0) };
 
     /* 定义写入内容 */
-    let write = b"complete -c rust-installation -f -a 'h v c cargo zigbuild update uninstall tap list'";
+    let write = b"complete -c rust-installation -f -a 'h v c cargo zigbuild remove-zigbuild update uninstall tap list install-nightly remove-nightly install-stable nightly stable'";
 
     /* 写入文件 */
     let _ = file.write_all(write).await?;
@@ -130,6 +138,37 @@ pub async fn list() -> Result<(), Box<dyn std::error::Error>> {
     /* 列出所有 rust 版本 */
     cmd(r#"rustup show"#,"list").await?;
 
+    Ok(())
+}
+
+/* 安装 rust nightly 版本 */
+pub async fn install_nightly() -> Result<(), Box<dyn std::error::Error>> {
+    cmd(r#"rustup toolchain install nightly"#,"nightly").await?;
+
+    Ok(())
+}
+
+/* 删除 rust nightly 版本 */
+pub async fn remove_nightly() -> Result<(), Box<dyn std::error::Error>> {
+    cmd(r#"rustup toolchain uninstall nightly"#,"remove-nightly").await?;
+    Ok(())
+}
+
+/* 安装 rust stable 版本 */
+pub async fn install_stable() -> Result<(), Box<dyn std::error::Error>> {
+    cmd(r#"rustup toolchain install stable"#,"stable").await?;
+    Ok(())
+}
+
+/* 切换 rust nightly 版本 */
+pub async fn nightly() -> Result<(), Box<dyn std::error::Error>> {
+    cmd(r#"rustup default nightly"#,"nightly").await?;
+    Ok(())
+}
+
+/* 切换 rust stable 版本 */
+pub async fn stable() -> Result<(), Box<dyn std::error::Error>> {
+    cmd(r#"rustup default stable"#,"stable").await?;
     Ok(())
 }
 

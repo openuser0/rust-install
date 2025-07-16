@@ -39,17 +39,28 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>>{
 
             /* 帮助 */
             "h" => {
+                /* 定义命令参数集合 */
+                let cmd = vec![
+                    "无参数 , 安装 rustup 并设置镜像",
+                    "h , 帮助 ",
+                    "v , 版本号",
+                    "c , 代码仓库",
+                    "cargo , 添加 cargo 镜像",
+                    "zigbuild , 添加 zigbuild 构建工具",
+                    "remove-zigbuild , 删除 zigbuild 构建工具",
+                    "update , 更新 rust",
+                    "uninstall , 删除 rust",
+                    "tap , 开启 fish 的 tap 补全",
+                    "list , 列出所有 rust 版本",
+                    "install-nightly , 安装 rust nightly 版本",
+                    "remove-nightly , 删除 rust nightly 版本",
+                    "install-stable , 安装 rust stable 版本(默认)",
+                    "nightly , 切换到 rust nightly 版本",
+                    "stable , 切换到 rust stable 版本",
+                ];
+
                 /* 打印参数命令信息 */
-                println!("无参数 , 安装 rustup 并设置镜像");
-                println!("h , 帮助 ");
-                println!("v , 版本号");
-                println!("c , 代码仓库");
-                println!("cargo , 添加 cargo 镜像");
-                println!("zigbuild , 添加 zigbuild 构建工具");
-                println!("update , 更新 rust");
-                println!("uninstall , 删除 rust");
-                println!("tap , 开启 fish 的 tap 补全");
-                println!("list , 列出所有 rust 版本");
+                for i in cmd { println!("{i}") }
 
                 /* 退出程序 */
                 std::process::exit(0)
@@ -101,6 +112,17 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>>{
                 /* 防止影响到 func 包中的模块 */
             }
 
+            /* 删除 zigbuild 构建工具 */
+            "remove-zigbuild" => {
+                /* 抽象化选择 */
+                select("是否删除 cargo-zigbuild 构建工具? [y/n]", "已取消删除 zigbuild");
+                function_mod_https::remove_zigbuild().await?;
+
+                /* 退出程序 */
+                std::process::exit(0)
+                /* 防止影响到 func 包中的模块 */
+            }
+
             /* 更新 rust */
             "update" => {
                 /* 抽象化选择 */
@@ -135,6 +157,59 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>>{
             /* 列出所有 rust 版本 */
             "list" => {
                 let _ = function_mod_https::list().await;
+
+                /* 退出程序 */
+                std::process::exit(0)
+                /* 防止影响到 func 包中的模块 */
+            }
+
+            /* 安装 rust nightly 版本 */
+            "install-nightly" => {
+                /* 抽象化选择 */
+                select("是否安装 rust nightly ？ [y/n]", "已取消 nightly 添加");
+                let _ = function_mod_https::install_nightly().await;
+
+                /* 退出程序 */
+                std::process::exit(0)
+                /* 防止影响到 func 包中的模块 */
+            }
+
+            /* 删除 rust nightly 版本 */
+            "remove-nightly" => {
+                /* 抽象化选择 */
+                select("是否删除 rust nightly ？ [y/n]", "已取消 nightly 删除");
+                let _ = function_mod_https::remove_nightly().await;
+
+                /* 退出程序 */
+                std::process::exit(0)
+                /* 防止影响到 func 包中的模块 */
+            }
+
+            /* 安装 rust stable 版本 */
+            "install-stable" => {
+                /* 抽象化选择 */
+                select("是否安装 rust stable ？ [y/n]", "已取消 stable 添加");
+                let _ = function_mod_https::install_stable().await;
+
+                /* 退出程序 */
+                std::process::exit(0)
+                /* 防止影响到 func 包中的模块 */
+            }
+
+            /* 切换 rust nightly 版本 */
+            "nightly" => {
+                select("是否切换到 rust nightly ？ [y/n]", "已取消 nightly 切换");
+                let _ = function_mod_https::nightly().await;
+
+                /* 退出程序 */
+                std::process::exit(0)
+                /* 防止影响到 func 包中的模块 */
+            }
+
+            /* 切换 rust stable 版本 */
+            "stable" => {
+                select("是否切换到 rust stable ？ [y/n]", "已取消 stable 切换");
+                let _ = function_mod_https::stable().await;
 
                 /* 退出程序 */
                 std::process::exit(0)
