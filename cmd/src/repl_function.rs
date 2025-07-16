@@ -70,7 +70,7 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>>{
             /* 版本号 */
             "v" => {
                 /* 打印版本号 */
-                println!("1.2.0");
+                println!("1.3.0");
 
                 /* 退出程序 */
                 std::process::exit(0)
