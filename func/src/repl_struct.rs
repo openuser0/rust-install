@@ -43,28 +43,7 @@ pub async fn run(){
 #[cfg(target_os = "windows")]
 async fn windows_install() -> Result<(), Box<dyn std::error::Error>>{
     /* 检测 rust 工具是否存在性 */
-    if let Ok(_) = Command::new("rustup").arg("--version").output().await { println!("rust 工具已存在"); return Ok(()); }else { println!("未安装rust,现在开始安装"); () }
-
-    /* 获取 USERPROFILE 环境变量 */
-    let user = format!("{}\\Desktop\\rustup-init.exe",var("USERPROFILE")?);
-
-    /* 下载 rustup.exe */
-    let mut cmd = Command::new("curl.exe")
-        .arg("-o")
-        .arg(&user)
-        .arg("https://static.rust-lang.org/rustup/dist/x86_64-pc-windows-msvc/rustup-init.exe")
-        .stdout(Stdio::inherit())/* 输出打印到终端 */
-        .stderr(Stdio::inherit())/* 错误打印到终端 */
-        .spawn()?;
-
-    /* 堵塞等待下载完成 */
-    let _ = cmd.wait().await?;
-
-    /* 执行 rustup.exe  */
-    let mut cmd = Command::new(&user).stdout(Stdio::inherit()).stderr(Stdio::inherit()).spawn()?;
-
-    /* 堵塞等待安装完成 */
-    let _ = cmd.wait().await?;
+    println!("狗屎windows,微软操你妈");
 
     Ok(())
 }
