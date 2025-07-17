@@ -10,11 +10,13 @@ async fn main(){
 
     cmd::rl_struct();
 
+    #[cfg(target_os = "linux")]
     cmd::rl_function().await;
 
     func::rl_trait();
 
-    func::rl_struct();
+    func::rl_struct().await;
 
+    #[cfg(target_os = "linux")]
     func::rl_function().await;
 }

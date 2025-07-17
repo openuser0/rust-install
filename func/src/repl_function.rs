@@ -34,7 +34,7 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
     支持平台: linux
     */
 
-    /* 检测 rust 工具是否存在 */
+    /* 检测 rust 工具是否存在性 */
     if let Ok(_) = Command::new("rustup").arg("--version").output().await { println!("rust 工具已存在"); return Ok(()); }else { println!("未安装rust,现在开始安装"); () }
 
     /* 定义 bash || fish 镜像关键部分 */

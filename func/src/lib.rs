@@ -32,10 +32,10 @@ pub fn rl_trait(){
 
 /* 调用 类型操作 */
 
-pub fn rl_struct(){
+pub async fn rl_struct(){
 
     /* 执行 repl_struct 内部操作 */
-    repl_struct::run();
+    let _ = repl_struct::run().await;
 }
 
 /* 调用 函数操作 */
