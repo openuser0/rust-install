@@ -284,9 +284,6 @@ pub async fn uninstall() -> Result<(), Box<dyn std::error::Error>> {
 
 /* 更新 rust */
 pub async fn update() -> Result<(), Box<dyn std::error::Error>> {
-    /* cargo 镜像存在性检测 */
-    if let Err(_) = cargo_bool().await{}else { println!("cargo 镜像不存在,请执行 rust-installation cargo 命令添加"); std::process::exit(0) }
-
     /* 更新 rust */
     cmd(r#"rustup update"#).await?;
 
@@ -366,7 +363,11 @@ async fn cargo_bool() -> Result<PathBuf, Box<dyn std::error::Error>> {
 
 /* 执行命令 */
 async fn cmd(shell:&str) -> Result<(), Box<dyn std::error::Error>> {
-    let _ = Command::new("bash").arg("-c").arg(shell).status().await?;
+    let _ = Command::new("bash").arg("-c").arg(shell)
+        /* 设置管道 | 临时镜像 */
+        .env("RUSTUP_UPDATE_ROOT","https://mirrors.tuna.tsinghua.edu.cn/rustup/rustup")
+        .env("RUSTUP_DIST_SERVER","https://mirrors.tuna.tsinghua.edu.cn/rustup")
+        .status().await?;
 
     Ok(())
 }
