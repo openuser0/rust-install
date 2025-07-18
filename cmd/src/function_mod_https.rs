@@ -131,7 +131,6 @@ pub async fn select(par:Select){
     }
 }
 
-
 /* 帮助 */
 pub fn help(){
     /* 定义命令参数集合 */
@@ -200,14 +199,40 @@ index = "sparse+https://mirrors.tuna.tsinghua.edu.cn/crates.io-index/"
     Ok(())
 }
 
-/* 添加 zigbuild 构建工具 */
-pub async fn zigbuild() -> Result<(), Box<dyn std::error::Error>> {
-    /* cargo 镜像存在性检测 */
-    if let Err(_) = cargo_bool().await{}else { println!("cargo 镜像不存在,请执行 rust-installation cargo 命令添加"); std::process::exit(0) }
+/* 安装 rust nightly 版本 */
+pub async fn install_nightly() -> Result<(), Box<dyn std::error::Error>> {
+    cmd(r#"RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup install nightly"#).await?;
 
-    /* 安装 zigbuild */
-    cmd(r#"cargo install --locked cargo-zigbuild"#).await?;
+    Ok(())
+}
 
+/* 安装 rust stable 版本 */
+pub async fn install_stable() -> Result<(), Box<dyn std::error::Error>> {
+    cmd(r#"RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup install stable"#).await?;
+    Ok(())
+}
+
+/* 列出所有 rust 版本 */
+pub async fn list() -> Result<(), Box<dyn std::error::Error>> {
+    /* 判断 rust 存在性 */
+    let res = Command::new("rustup").arg("--version").stdout(Stdio::null()).stderr(Stdio::null()).spawn();
+    if let Ok(_) = res {}else { println!("rust 不存在 , 执行 rust-installation 命令安装"); std::process::exit(0) };
+
+    /* 列出所有 rust 版本 */
+    cmd(r#"rustup show"#).await?;
+
+    Ok(())
+}
+
+/* 切换 rust nightly 版本 */
+pub async fn nightly() -> Result<(), Box<dyn std::error::Error>> {
+    cmd(r#"rustup default nightly"#).await?;
+    Ok(())
+}
+
+/* 删除 rust nightly 版本 */
+pub async fn remove_nightly() -> Result<(), Box<dyn std::error::Error>> {
+    cmd(r#"rustup toolchain uninstall nightly"#).await?;
     Ok(())
 }
 
@@ -219,22 +244,9 @@ pub async fn remove_zigbuild() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-/* 更新 rust */
-pub async fn update() -> Result<(), Box<dyn std::error::Error>> {
-    /* cargo 镜像存在性检测 */
-    if let Err(_) = cargo_bool().await{}else { println!("cargo 镜像不存在,请执行 rust-installation cargo 命令添加"); std::process::exit(0) }
-
-    /* 更新 rust */
-    cmd(r#"rustup update"#).await?;
-
-    Ok(())
-}
-
-/* 删除 uninstall */
-pub async fn uninstall() -> Result<(), Box<dyn std::error::Error>> {
-    /* 删除 uninstall */
-    cmd(r#"rustup self uninstall"#).await?;
-
+/* 切换 rust stable 版本 */
+pub async fn stable() -> Result<(), Box<dyn std::error::Error>> {
+    cmd(r#"rustup default stable"#).await?;
     Ok(())
 }
 
@@ -262,46 +274,33 @@ pub async fn tap() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-/* 列出所有 rust 版本 */
-pub async fn list() -> Result<(), Box<dyn std::error::Error>> {
-    /* 判断 rust 存在性 */
-    let res = Command::new("rustup").arg("--version").stdout(Stdio::null()).stderr(Stdio::null()).spawn();
-    if let Ok(_) = res {}else { println!("rust 不存在 , 执行 rust-installation 命令安装"); std::process::exit(0) };
-
-    /* 列出所有 rust 版本 */
-    cmd(r#"rustup show"#).await?;
+/* 删除 uninstall */
+pub async fn uninstall() -> Result<(), Box<dyn std::error::Error>> {
+    /* 删除 uninstall */
+    cmd(r#"rustup self uninstall"#).await?;
 
     Ok(())
 }
 
-/* 安装 rust nightly 版本 */
-pub async fn install_nightly() -> Result<(), Box<dyn std::error::Error>> {
-    cmd(r#"RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup install nightly"#).await?;
+/* 更新 rust */
+pub async fn update() -> Result<(), Box<dyn std::error::Error>> {
+    /* cargo 镜像存在性检测 */
+    if let Err(_) = cargo_bool().await{}else { println!("cargo 镜像不存在,请执行 rust-installation cargo 命令添加"); std::process::exit(0) }
+
+    /* 更新 rust */
+    cmd(r#"rustup update"#).await?;
 
     Ok(())
 }
 
-/* 删除 rust nightly 版本 */
-pub async fn remove_nightly() -> Result<(), Box<dyn std::error::Error>> {
-    cmd(r#"rustup toolchain uninstall nightly"#).await?;
-    Ok(())
-}
+/* 添加 zigbuild 构建工具 */
+pub async fn zigbuild() -> Result<(), Box<dyn std::error::Error>> {
+    /* cargo 镜像存在性检测 */
+    if let Err(_) = cargo_bool().await{}else { println!("cargo 镜像不存在,请执行 rust-installation cargo 命令添加"); std::process::exit(0) }
 
-/* 安装 rust stable 版本 */
-pub async fn install_stable() -> Result<(), Box<dyn std::error::Error>> {
-    cmd(r#"RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup install stable"#).await?;
-    Ok(())
-}
+    /* 安装 zigbuild */
+    cmd(r#"cargo install --locked cargo-zigbuild"#).await?;
 
-/* 切换 rust nightly 版本 */
-pub async fn nightly() -> Result<(), Box<dyn std::error::Error>> {
-    cmd(r#"rustup default nightly"#).await?;
-    Ok(())
-}
-
-/* 切换 rust stable 版本 */
-pub async fn stable() -> Result<(), Box<dyn std::error::Error>> {
-    cmd(r#"rustup default stable"#).await?;
     Ok(())
 }
 
