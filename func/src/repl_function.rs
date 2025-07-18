@@ -33,11 +33,11 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
 
     /* 临时设置 rustup 镜像(bash fish) */
     if let Ok(_) = Command::new("bash").arg("--version").status().await{
-        Command::new("bash").arg(&format!("-c {}",r#"export RUSTUP_UPDATE_ROOT=https://mirrors.tuna.tsinghua.edu.cn/rustup/rustup&&export RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup"#))
+        Command::new("bash").args(["-c",r#"export RUSTUP_UPDATE_ROOT=https://mirrors.tuna.tsinghua.edu.cn/rustup/rustup&&export RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup"#]).status().await?;
     }else { println!("bash 不存在"); return Err("bash 不存在".into()) };
 
     /* 安装 rustup */
-    Command::new("bash").arg(&format!("-c {}",r#"curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh"#)).status().await?;
-    
+    Command::new("bash").args(["-c",r#"curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh"#]).status().await?;
+
     Ok(())
 }
