@@ -140,17 +140,18 @@ pub fn help(){
         "v , 版本号",
         "c , 代码仓库",
         "cargo , 添加 cargo 镜像",
-        "zigbuild , 添加 zigbuild 构建工具",
-        "remove-zigbuild , 删除 zigbuild 构建工具",
-        "update , 更新 rust",
-        "uninstall , 删除 rust",
-        "tap , 开启 fish 的 tap 补全",
-        "list , 列出所有 rust 版本",
         "install-nightly , 安装 rust nightly 版本",
-        "remove-nightly , 删除 rust nightly 版本",
         "install-stable , 安装 rust stable 版本(默认)",
+        "list , 列出所有 rust 版本",
         "nightly , 切换到 rust nightly 版本",
+        "remove-nightly , 删除 rust nightly 版本",
+        "remove-zigbuild , 删除 zigbuild 构建工具",
         "stable , 切换到 rust stable 版本",
+        "tap , 开启 fish 的 tap 补全",
+        "uninstall , 删除 rust",
+        "update , 更新 rust",
+        "zigbuild , 添加 zigbuild 构建工具",
+        
     ];
 
     /* 打印参数命令信息 */
