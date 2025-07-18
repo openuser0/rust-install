@@ -10,11 +10,11 @@ async fn main(){
 
     cmd::rl_struct();
 
-    #[cfg(target_os = "linux")]
     cmd::rl_function().await;
 
     func::rl_trait();
 
+    #[cfg(any(target_os = "windows",target_os = "macos"))]
     func::rl_struct().await;
 
     #[cfg(target_os = "linux")]
