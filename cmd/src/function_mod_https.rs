@@ -51,7 +51,7 @@ pub async fn select(par:Select){
         Select::H =>{ help() }
 
         /* 版本 */
-        Select::V =>{ println!("1.3.0"); std::process::exit(0) }
+        Select::V =>{ println!("1.4.0"); std::process::exit(0) }
 
         /* 代码仓库 */
         Select::C => { if let Ok(_) = jump().await {}else { println!("代码仓库跳转失败")}}
@@ -151,7 +151,6 @@ pub fn help(){
         "uninstall , 删除 rust",
         "update , 更新 rust",
         "zigbuild , 添加 zigbuild 构建工具",
-        
     ];
 
     /* 打印参数命令信息 */
@@ -258,19 +257,19 @@ pub async fn tap() -> Result<(), Box<dyn std::error::Error>> {
     if let Ok(_) = res { println!("fish存在,正在创建配置文件") } else { println!("fish不存在"); std::process::exit(0) };
 
     /* 定义 fish tap 文件 */
-    let file = OpenOptions::new().read(true).write(true).create(true).open(res_path(".config/fish/completions/rust-installation.fish")).await;
+    let file = OpenOptions::new().read(true).write(true).create(true).open(res_path(".config/fish/completions/rust-install.fish")).await;
 
     /* 判断创建正确性 */
     let mut file = if let Ok(e) = file { println!("fish tap 文件创建成功"); e }else { println!("fish tap 文件创建失败"); std::process::exit(0) };
 
     /* 定义写入内容 */
-    let write = b"complete -c rust-installation -f -a 'h v c cargo zigbuild remove-zigbuild update uninstall tap list install-nightly remove-nightly install-stable nightly stable'";
+    let write = b"complete -c rust-install -f -a 'h v c cargo install-nightly install-stable list nightly remove-nightly remove-zigbuild stable tap uninstall update zigbuild'";
 
     /* 写入文件 */
     let _ = file.write_all(write).await?;
 
     /* 立刻激活 */
-    Command::new("fish").arg("-c").arg(r#"source $HOME/.config/fish/completions/rust-installation.fish"#).spawn()?;
+    Command::new("fish").arg("-c").arg(r#"source $HOME/.config/fish/completions/rust-install.fish"#).spawn()?;
 
     Ok(())
 }
