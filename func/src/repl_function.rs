@@ -29,7 +29,7 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
     */
 
     /* 检测 rust 工具是否存在性 */
-    if let Ok(_) = Command::new("rustup").arg(&format!("-V&&rustc -V&&cargo -V")).status().await { println!("rust 已存在"); return Ok(()) }else { println!("rust 不存在 , 开始安装") }
+    if let Ok(_) = Command::new("cargo").arg("-V").status().await { println!("rust 已存在"); return Ok(()) }else { println!("rust 不存在 , 开始安装") }
 
     /* 临时设置 rustup 镜像(bash fish) */
     if let Ok(_) = Command::new("bash").arg("--version").status().await{
