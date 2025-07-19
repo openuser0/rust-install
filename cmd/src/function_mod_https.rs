@@ -60,7 +60,7 @@ pub async fn select(par:Select){
         Select::V =>{ println!("1.4.0"); std::process::exit(0) }
 
         /* 代码仓库 */
-        Select::C => { if let Ok(_) = jump().await {}else { println!("代码仓库跳转失败")}}
+        Select::C => { if let Ok(_) = jump().await {}else { println!("代码仓库跳转失败")}; std::process::exit(0)}
 
         /* 添加 cargo 镜像 */
         Select::Cargo => {
@@ -172,10 +172,9 @@ pub async fn jump() -> Result<(), Box<dyn std::error::Error>> {
     /* 跳转代码仓库 */
     #[cfg(target_os = "linux")]
     cmd(r#"xdg-open https://gitcode.com/songjiaqicode/rust-installation"#).await?;
-    /* 这会调用 xdg-open(桌面通用web接口) 打开代码仓库 */
 
     #[cfg(target_os = "windows")]
-    Command::new("start").args([r#""#,r#"https://gitcode.com/songjiaqicode/rust-installation"#]).status().await?;
+    Command::new("cmd").args(["/C","start","https://gitcode.com/songjiaqicode/rust-installation"]).status().await?;
 
     /* 打印代码仓库 */
     println!("gitcode:\nhttps://gitcode.com/songjiaqicode/rust-installation\ngitee:\nhttps://gitee.com/songjiaqicode/rust-installation"); std::process::exit(0)
@@ -390,7 +389,7 @@ async fn cmd(shell:&str) -> Result<(), Box<dyn std::error::Error>> {
         .status().await?;
 
     #[cfg(target_os = "windows")]
-    Command::new(shell)
+    Command::new(r#"C:\msys64\usr\bin\bash.exe"#).args(["-c",shell])
         .env("RUSTUP_UPDATE_ROOT","https://mirrors.tuna.tsinghua.edu.cn/rustup/rustup")
         .env("RUSTUP_DIST_SERVER","https://mirrors.tuna.tsinghua.edu.cn/rustup")
         .status().await?;
