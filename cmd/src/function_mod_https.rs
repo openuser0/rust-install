@@ -17,7 +17,10 @@
 use std::io::stdin;
 use std::path::{PathBuf, Path};
 use std::env::var;
+
+#[cfg(target_os = "linux")]
 use std::process::Stdio;
+
 use tokio::fs::{OpenOptions};
 use tokio::io::{AsyncWriteExt, AsyncReadExt};
 use tokio::process::Command;
@@ -37,7 +40,10 @@ pub enum Select{
     RemoveNightly,/* 删除 rust nightly 版本 */
     RemoveZigbuild,/* 删除 zigbuild 构建工具 */
     Stable,/* 切换 stable 版本 */
+
+    #[cfg(target_os = "linux")]
     Tap,/* 创建 fish tap 补全 */
+
     Uninstall,/* 删除 rust */
     Update,/* 更新 rust */
     Zigbuild,/* 添加 zigbuild 构建工具 */
@@ -106,6 +112,7 @@ pub async fn select(par:Select){
         }
 
         /* 创建 fish tap 补全 */
+        #[cfg(target_os = "linux")]
         Select::Tap => {
             select_cmd("是否创建 fish tap 补全? [y/n]", "已取消 fish tap 补全创建");
             if let Ok(_) = tap().await {}else { println!("fish tap 补全创建失败")}; std::process::exit(0)
@@ -147,7 +154,10 @@ pub fn help(){
         "remove-nightly , 删除 rust nightly 版本",
         "remove-zigbuild , 删除 zigbuild 构建工具",
         "stable , 切换到 rust stable 版本",
+
+        #[cfg(target_os = "linux")]
         "tap , 开启 fish 的 tap 补全",
+
         "uninstall , 删除 rust",
         "update , 更新 rust",
         "zigbuild , 添加 zigbuild 构建工具",
@@ -160,8 +170,12 @@ pub fn help(){
 /* 代码仓库跳转 */
 pub async fn jump() -> Result<(), Box<dyn std::error::Error>> {
     /* 跳转代码仓库 */
+    #[cfg(target_os = "linux")]
     cmd(r#"xdg-open https://gitcode.com/songjiaqicode/rust-installation"#).await?;
     /* 这会调用 xdg-open(桌面通用web接口) 打开代码仓库 */
+
+    #[cfg(target_os = "windows")]
+    Command::new("start").args([r#""#,r#"https://gitcode.com/songjiaqicode/rust-installation"#]).status().await?;
 
     /* 打印代码仓库 */
     println!("gitcode:\nhttps://gitcode.com/songjiaqicode/rust-installation\ngitee:\nhttps://gitee.com/songjiaqicode/rust-installation"); std::process::exit(0)
@@ -201,23 +215,23 @@ index = "sparse+https://mirrors.tuna.tsinghua.edu.cn/crates.io-index/"
 
 /* 安装 rust nightly 版本 */
 pub async fn install_nightly() -> Result<(), Box<dyn std::error::Error>> {
+    /* 安装 rust nightly 版本 */
     cmd(r#"RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup install nightly"#).await?;
+
 
     Ok(())
 }
 
 /* 安装 rust stable 版本 */
 pub async fn install_stable() -> Result<(), Box<dyn std::error::Error>> {
+    /* 安装 rust stable 版本 */
     cmd(r#"RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup install stable"#).await?;
+
     Ok(())
 }
 
 /* 列出所有 rust 版本 */
 pub async fn list() -> Result<(), Box<dyn std::error::Error>> {
-    /* 判断 rust 存在性 */
-    let res = Command::new("rustup").arg("--version").stdout(Stdio::null()).stderr(Stdio::null()).spawn();
-    if let Ok(_) = res {}else { println!("rust 不存在 , 执行 rust-installation 命令安装"); std::process::exit(0) };
-
     /* 列出所有 rust 版本 */
     cmd(r#"rustup show"#).await?;
 
@@ -226,7 +240,9 @@ pub async fn list() -> Result<(), Box<dyn std::error::Error>> {
 
 /* 切换 rust nightly 版本 */
 pub async fn nightly() -> Result<(), Box<dyn std::error::Error>> {
+    /* 切换 rust nightly 版本 */
     cmd(r#"rustup default nightly"#).await?;
+
     Ok(())
 }
 
@@ -251,6 +267,7 @@ pub async fn stable() -> Result<(), Box<dyn std::error::Error>> {
 }
 
 /* fish 的 tap 补全 */
+#[cfg(target_os = "linux")]
 pub async fn tap() -> Result<(), Box<dyn std::error::Error>> {
     /* 判断 fish 存在性 */
     let res = Command::new("fish").arg("-v").stdout(Stdio::null()).stderr(Stdio::null()).spawn();
@@ -292,9 +309,6 @@ pub async fn update() -> Result<(), Box<dyn std::error::Error>> {
 
 /* 添加 zigbuild 构建工具 */
 pub async fn zigbuild() -> Result<(), Box<dyn std::error::Error>> {
-    /* cargo 镜像存在性检测 */
-    if let Err(_) = cargo_bool().await{}else { println!("cargo 镜像不存在,请执行 rust-installation cargo 命令添加"); std::process::exit(0) }
-
     /* 安装 zigbuild */
     cmd(r#"cargo install --locked cargo-zigbuild"#).await?;
 
@@ -304,7 +318,12 @@ pub async fn zigbuild() -> Result<(), Box<dyn std::error::Error>> {
 /* 路径处理 */
 fn res_path(path:&str) -> PathBuf {
     /* 获取 $HOME 环境变量并转换为 $Path */
-    let home = var("HOME").expect("解包失败");
+    #[cfg(target_os = "linux")]
+    let home = var("HOME").expect("linux 解包失败");
+
+    #[cfg(target_os = "windows")]
+    let home = var("USERPROFILE").expect("windows 解包失败");
+
     let home = Path::new(&home);
     /* join() 不接受 String 所以转化为 &Path */
 
@@ -320,7 +339,7 @@ async fn cargo_bool() -> Result<PathBuf, Box<dyn std::error::Error>> {
     /* 定义 .cargo 配置文件路径 */
     let cargo_path = res_path(".cargo/config.toml");
 
-    /* 打开 $HOME/.cargo/config.toml 配置文件 */
+    /* 打开 .cargo/config.toml 配置文件 */
     if let Ok(mut e) = OpenOptions::new().read(true).open(&cargo_path).await {
 
         /* 读取 config.toml 配置文件内容 */
@@ -363,8 +382,15 @@ async fn cargo_bool() -> Result<PathBuf, Box<dyn std::error::Error>> {
 
 /* 执行命令 */
 async fn cmd(shell:&str) -> Result<(), Box<dyn std::error::Error>> {
-    let _ = Command::new("bash").arg("-c").arg(shell)
+    #[cfg(target_os = "linux")]
+    Command::new("bash").arg("-c").arg(shell)
         /* 设置管道 | 临时镜像 */
+        .env("RUSTUP_UPDATE_ROOT","https://mirrors.tuna.tsinghua.edu.cn/rustup/rustup")
+        .env("RUSTUP_DIST_SERVER","https://mirrors.tuna.tsinghua.edu.cn/rustup")
+        .status().await?;
+
+    #[cfg(target_os = "windows")]
+    Command::new(shell)
         .env("RUSTUP_UPDATE_ROOT","https://mirrors.tuna.tsinghua.edu.cn/rustup/rustup")
         .env("RUSTUP_DIST_SERVER","https://mirrors.tuna.tsinghua.edu.cn/rustup")
         .status().await?;

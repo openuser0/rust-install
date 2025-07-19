@@ -72,6 +72,7 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>>{
             "stable" => { function_mod_https::select(Select::Stable).await}
 
             /* 开启 fish 的 tap 补全 */
+            #[cfg(target_os = "linux")]
             "tap" => { function_mod_https::select(Select::Tap).await }
 
             /* 删除 rust */
