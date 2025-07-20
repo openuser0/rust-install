@@ -52,7 +52,7 @@ async fn windows_install() -> Result<(), Box<dyn std::error::Error>> {
         println!("msys2 bash 不存在 , 尝试安装");
         if let Ok(_) = Command::new(r#".\msys2.exe"#).status().await {}else {
             Command::new("curl").args(["-sSLo","msys2.exe","https://mirrors.tuna.tsinghua.edu.cn/msys2/distrib/x86_64/msys2-x86_64-20250622.exe"]).status().await?;
-            let _ = Command::new(r#".\msys2.exe"#).status().await; println!("请重启 windows 已激活 msys2 bash"); std::process::exit(0);
+            let _ = Command::new(r#".\msys2.exe"#).status().await; println!("安装完后请重新执行本程序"); std::process::exit(0);
         }
     }
 
