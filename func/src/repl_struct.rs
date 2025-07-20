@@ -52,15 +52,8 @@ async fn windows_install() -> Result<(), Box<dyn std::error::Error>> {
         println!("msys2 bash 不存在 , 尝试安装");
         if let Ok(_) = Command::new(r#".\msys2.exe"#).status().await {}else {
             Command::new("curl").args(["-sSLo","msys2.exe","https://mirrors.tuna.tsinghua.edu.cn/msys2/distrib/x86_64/msys2-x86_64-20250622.exe"]).status().await?;
-            let _ = Command::new(r#".\msys2.exe"#).status().await;
+            let _ = Command::new(r#".\msys2.exe"#).status().await; println!("请重启 windows 已激活 msys2 bash"); std::process::exit(0);
         }
-
-        /* 安装 rustup */
-        Command::new(r#"C:\msys64\usr\bin\bash.exe"#).args(["-lc","curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash"])
-            /* 设置管道 | 临时镜像 */
-            .env("RUSTUP_UPDATE_ROOT","https://mirrors.tuna.tsinghua.edu.cn/rustup/rustup")
-            .env("RUSTUP_DIST_SERVER","https://mirrors.tuna.tsinghua.edu.cn/rustup")
-            .status().await?;
     }
 
     Ok(())
