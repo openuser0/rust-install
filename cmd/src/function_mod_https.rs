@@ -389,7 +389,7 @@ async fn cmd(shell:&str) -> Result<(), Box<dyn std::error::Error>> {
         .status().await?;
 
     #[cfg(target_os = "windows")]
-    Command::new(r#"C:\msys64\usr\bin\bash.exe"#).args(["-c",shell])
+    Command::new(r#"C:\msys64\usr\bin\bash.exe"#).args(["-lc",shell])
         .env("RUSTUP_UPDATE_ROOT","https://mirrors.tuna.tsinghua.edu.cn/rustup/rustup")
         .env("RUSTUP_DIST_SERVER","https://mirrors.tuna.tsinghua.edu.cn/rustup")
         .status().await?;

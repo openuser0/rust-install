@@ -42,7 +42,7 @@ async fn windows_install() -> Result<(), Box<dyn std::error::Error>> {
     /* 执行并判断 msys2 bash 存在性 */
     if let Ok(_) = Command::new(r#"C:\msys64\usr\bin\bash.exe"#).arg("--version").status().await {
         /* 安装 rustup */
-        Command::new(r#"C:\msys64\usr\bin\bash.exe"#).args(["-c",r#""curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash""#])
+        Command::new(r#"C:\msys64\usr\bin\bash.exe"#).args(["-lc",r#""curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash""#])
             /* 设置管道 | 临时镜像 */
             .env("RUSTUP_UPDATE_ROOT","https://mirrors.tuna.tsinghua.edu.cn/rustup/rustup")
             .env("RUSTUP_DIST_SERVER","https://mirrors.tuna.tsinghua.edu.cn/rustup")
@@ -56,7 +56,7 @@ async fn windows_install() -> Result<(), Box<dyn std::error::Error>> {
         }
 
         /* 安装 rustup */
-        Command::new(r#"C:\msys64\usr\bin\bash.exe"#).args(["-c",r#""curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash""#])
+        Command::new(r#"C:\msys64\usr\bin\bash.exe"#).args(["-lc",r#""curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash""#])
             /* 设置管道 | 临时镜像 */
             .env("RUSTUP_UPDATE_ROOT","https://mirrors.tuna.tsinghua.edu.cn/rustup/rustup")
             .env("RUSTUP_DIST_SERVER","https://mirrors.tuna.tsinghua.edu.cn/rustup")
