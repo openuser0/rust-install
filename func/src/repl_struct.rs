@@ -40,9 +40,9 @@ async fn windows_install() -> Result<(), Box<dyn std::error::Error>> {
     if let Ok(_) = Command::new("cargo").arg("-V").status().await { println!("rust 已存在"); return Ok(()) }else { println!("rust 不存在 , 开始安装") }
 
     /* 执行并判断 msys2 bash 存在性 */
-    if let Ok(_) = Command::new(r#"C:\msys64\usr\bin\bash.exe"#).arg("-c").arg(r#"bash --version"#).status().await {
+    if let Ok(_) = Command::new(r#"C:\msys64\usr\bin\bash.exe"#).args(["-c","bash --version"]).status().await {
         /* 安装 rustup */
-        Command::new(r#"C:\msys64\usr\bin\bash.exe"#).arg("-c").arg(r#"curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh"#)
+        Command::new(r#"C:\msys64\usr\bin\bash.exe"#).args(["-c","curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh"])
             /* 设置管道 | 临时镜像 */
             .env("RUSTUP_UPDATE_ROOT","https://mirrors.tuna.tsinghua.edu.cn/rustup/rustup")
             .env("RUSTUP_DIST_SERVER","https://mirrors.tuna.tsinghua.edu.cn/rustup")
@@ -51,12 +51,12 @@ async fn windows_install() -> Result<(), Box<dyn std::error::Error>> {
         /* 安装 msys2 bash */
         println!("msys2 bash 不存在 , 尝试安装");
         if let Ok(_) = Command::new(r#".\msys2.exe"#).status().await {}else {
-            Command::new("curl").arg("-sSLo").arg("msys2.exe").arg("https://mirrors.tuna.tsinghua.edu.cn/msys2/distrib/x86_64/msys2-x86_64-20250622.exe").status().await?;
+            Command::new("curl").args(["-sSLo","msys2.exe","https://mirrors.tuna.tsinghua.edu.cn/msys2/distrib/x86_64/msys2-x86_64-20250622.exe"]).status().await?;
             Command::new(r#".\msys2.exe"#).status().await?;
         }
 
         /* 安装 rustup */
-        Command::new(r#"C:\msys64\usr\bin\bash.exe"#).arg("-c").arg(r#"curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh"#)
+        Command::new(r#"C:\msys64\usr\bin\bash.exe"#).args(["-c","curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh"])
             /* 设置管道 | 临时镜像 */
             .env("RUSTUP_UPDATE_ROOT","https://mirrors.tuna.tsinghua.edu.cn/rustup/rustup")
             .env("RUSTUP_DIST_SERVER","https://mirrors.tuna.tsinghua.edu.cn/rustup")
