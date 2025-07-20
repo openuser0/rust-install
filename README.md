@@ -14,8 +14,6 @@ ide: Rust Rover
 
 # 已知问题
 
-windows 支持实验性,不建议使用
-
 早期版本,功能较少,后期会根据需求新增功能
 
 # 功能介绍
@@ -26,4 +24,4 @@ windows 支持实验性,不建议使用
 
 下载好预编译版本后执行 **sudo cp 程序位置 /usr/local/bin/** 即可完成安装
 
-不会安装可以看看教程视频: https://www.bilibili.com/video/BV1kwuczVEJu/
+不会安装可以看看教程视频: https://www.bilibili.com/video/BV1H2gazqEqm/
