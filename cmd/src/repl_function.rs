@@ -73,7 +73,7 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>>{
 
             "tauri" => { function_mod::select(Select::Tauri).await }
 
-            "doc-taur" => { function_mod::select(Select::DocTauri).await }
+            "doc-tauri" => { function_mod::select(Select::DocTauri).await }
 
             "remove-tauri" => { function_mod::select(Select::RemoveTauri).await }
 
