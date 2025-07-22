@@ -27,15 +27,9 @@ use function_mod::Select;
 /* 内部操作 */
 
 pub async fn run() -> Result<(), Box<dyn std::error::Error>>{
-    /*
-    目标: 获取并解析命令参数,执行对应的操作
-    支持平台: linux
-    */
-
     /* 获取命令行参数 */
     for i in args().skip(1) {
         match i.as_str() {
-
             "h" => { function_mod::select(Select::H).await }
 
             "v" => { function_mod::select(Select::V).await }
