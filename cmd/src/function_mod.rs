@@ -57,7 +57,7 @@ pub async fn select(par:Select){
 
         Select::V =>{ println!("1.5.0"); std::process::exit(0) }
 
-        Select::C => { if let Ok(_) = jump("gitcode.com/songjiaqicode/rust-installation").await {}else { err() } off() }
+        Select::C => { if let Ok(_) = jump("https://gitcode.com/songjiaqicode/rust-installation").await {}else { err() } off() }
 
         Select::List => { select_cmd("是否列出 rust 版本信息? [y/n]"); if let Ok(_) = rustup_cli("show").await {}else { err() } off() }
 
