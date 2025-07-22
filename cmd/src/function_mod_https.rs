@@ -40,16 +40,13 @@ pub enum Select{
     RemoveNightly,/* 删除 rust nightly 版本 */
     RemoveZigbuild,/* 删除 zigbuild 构建工具 */
     Stable,/* 切换 stable 版本 */
-
-    #[cfg(target_os = "linux")]
     Tap,/* 创建 fish tap 补全 */
-
     Uninstall,/* 删除 rust */
     Update,/* 更新 rust */
     Zigbuild,/* 添加 zigbuild 构建工具 */
 }
 
-/* 根据传入枚举值进行对应的操作 */
+/* 根据枚举值匹配操作 */
 pub async fn select(par:Select){
     /* 匹配枚举值 */
     match par {
@@ -143,24 +140,36 @@ pub fn help(){
     /* 定义命令参数集合 */
     let cmd = vec![
         "无参数 , 安装 rustup 并设置镜像",
-        "h , 帮助 ",
-        "v , 版本号",
-        "c , 代码仓库",
-        "cargo , 添加 cargo 镜像",
-        "install-nightly , 安装 rust nightly 版本",
+
+        "[非功能性]"
+        "h 帮助 ",
+        "v 版本号",
+        "c 代码仓库",
+        "list 列出rust版本信息\n",
+
+        "[辅助功能性]"
+        "cargo 添加 cargo 镜像",
+        "<linux专属>tap-fish 开启 fish shell tap 补全",
+        "<新增>tap-bash 开启 bash shell tap 补全",
+        "<改动>install-nightly 安装 rust-nightly(每日构建) 版本",
+        "nightly 切换到rust-nightly版本",
+        "remove-nightly 删除rust-nightly版本",
+        "stable 切换到rust-stable版本",
+        "uninstall 删除rust",
+        "update 更新rust\n",
+
+        "[zigbuild构建工具]",
+        "zigbuild 添加zigbuild构建工具",
+        "doc-zigbuild 文档",
+        "remove-zigbuild  删除zigbuild",
+
+        "[tauri前端框架]"
+        "tauri 添加tauri框架"
+        "doc-tauri 文档"
+        "remove-tauri 删除tauri"
+
+        "[移除]",
         "install-stable , 安装 rust stable 版本(默认)",
-        "list , 列出所有 rust 版本",
-        "nightly , 切换到 rust nightly 版本",
-        "remove-nightly , 删除 rust nightly 版本",
-        "remove-zigbuild , 删除 zigbuild 构建工具",
-        "stable , 切换到 rust stable 版本",
-
-        #[cfg(target_os = "linux")]
-        "tap , 开启 fish 的 tap 补全",
-
-        "uninstall , 删除 rust",
-        "update , 更新 rust",
-        "zigbuild , 添加 zigbuild 构建工具",
     ];
 
     /* 打印参数命令信息 */
