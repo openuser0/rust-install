@@ -157,6 +157,7 @@ pub async fn tap_bash() -> Result<(), Box<dyn std::error::Error>>{
     let res = Command::new("bash").arg("--version").status().await;
     if let Ok(_) = res { println!("bash存在,正在创建配置文件") } else { println!("bash不存在"); return Err("bash不存在".into()) };
 
+    /* 写入环境变量 */
     let file = OpenOptions::new().append(true).read(true).create(true).open(res_path(".bashrc")).await;
     let mut file = if let Ok(e) = file { println!("bash tap 文件创建成功"); e }else { println!("bash tap 文件创建失败"); return Err("bash tap 文件创建失败".into()) };
     let write = r#"complete -W "h v c list cargo tap-fish tap-bash install-nightly nightly remove-nightly stable uninstall update zigbuild doc-zigbuild remove-zigbuild tauri doc-tauri remove-tauri" rust-install"#;

@@ -14,9 +14,7 @@ async fn main(){
 
     func::rl_trait();
 
-    #[cfg(any(target_os = "windows",target_os = "macos"))]
     func::rl_struct().await;
 
-    #[cfg(target_os = "linux")]
     func::rl_function().await;
 }
