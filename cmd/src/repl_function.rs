@@ -45,32 +45,38 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>>{
 
             "c" => { function_mod::select(Select::C).await }
 
+            "list" => { function_mod::select(Select::List).await }
+
             "cargo" => { function_mod::select(Select::Cargo).await }
 
-            "install-nightly" => { function_mod::select(Select::InstallNightly).await }
+            "tap-fish" => { function_mod::select(Select::TapFish).await }
 
-            "list" => { function_mod::select(Select::List).await }
+            "tap-bash" => { function_mod::select(Select::TapBash).await }
+
+            "install-nightly" => { function_mod::select(Select::InstallNightly).await }
 
             "nightly" => { function_mod::select(Select::Nightly).await }
 
             "remove-nightly" => { function_mod::select(Select::RemoveNightly).await }
 
-            "remove-zigbuild" => { function_mod::select(Select::RemoveZigbuild).await }
-
             "stable" => { function_mod::select(Select::Stable).await}
 
-            "tap" => { function_mod::select(Select::Tap).await }
-
-            /* 删除 rust */
             "uninstall" => { function_mod::select(Select::Uninstall).await }
 
-            /* 更新 rust */
             "update" => { function_mod::select(Select::Update).await }
 
-            /* zigbuild 构建工具 */
             "zigbuild" => { function_mod::select(Select::Zigbuild).await }
 
-            /* 错误命令处理 */
+            "doc-zigbuild" => { function_mod::select(Select::DocZigbuild).await }
+
+            "remove-zigbuild" => { function_mod::select(Select::RemoveZigbuild).await }
+
+            "tauri" => { function_mod::select(Select::Tauri).await }
+
+            "doc-taur" => { function_mod::select(Select::DocTauri).await }
+
+            "remove-tauri" => { function_mod::select(Select::RemoveTauri).await }
+
             _ => { println!("未定义的命令"); std::process::exit(0);}
         }
     }
