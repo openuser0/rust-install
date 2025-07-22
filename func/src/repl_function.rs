@@ -32,7 +32,7 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
     if let Ok(_) = Command::new("cargo").arg("-V").status().await { println!("rust 已存在"); return Ok(()) }else { println!("rust 不存在 , 开始安装") }
 
     /* 安装 rustup */
-    Command::new("bash").arg("-C").arg("curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh")
+    Command::new("bash").arg("-c").arg("curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh")
         /* 设置管道 | 临时镜像 */
         .env("RUSTUP_UPDATE_ROOT","https://mirrors.tuna.tsinghua.edu.cn/rustup/rustup")
         .env("RUSTUP_DIST_SERVER","https://mirrors.tuna.tsinghua.edu.cn/rustup")

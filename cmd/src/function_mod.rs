@@ -61,7 +61,7 @@ pub async fn select(par:Select){
 
         /* 代码仓库 */
         Select::C => { if let Ok(_) = jump(
-            "https://gitcode.com/songjiaqicode/rust-installation"
+            "gitcode.com/songjiaqicode/rust-installation"
         ).await {println!("gitcode:\nhttps://gitcode.com/songjiaqicode/rust-installation\ngitee:\nhttps://gitee.com/songjiaqicode/rust-installation")}else { println!("失败☠️") } std::process::exit(0)}
 
         /* 列出rust版本信息 */
@@ -306,7 +306,7 @@ async fn cargo_bool() -> Result<PathBuf, Box<dyn std::error::Error>> {
 /* 执行命令 */
 async fn cmd(shell:&str) -> Result<(), Box<dyn std::error::Error>> {
     #[cfg(target_os = "linux")]
-    Command::new("bash").arg("-C").arg(shell)
+    Command::new("bash").arg("-c").arg(shell)
         /* 设置管道 | 临时镜像 */
         .env("RUSTUP_UPDATE_ROOT","https://mirrors.tuna.tsinghua.edu.cn/rustup/rustup")
         .env("RUSTUP_DIST_SERVER","https://mirrors.tuna.tsinghua.edu.cn/rustup")
