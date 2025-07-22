@@ -60,22 +60,24 @@ pub async fn select(par:Select){
         Select::V =>{ println!("1.4.0"); std::process::exit(0) }
 
         /* 代码仓库 */
-        Select::C => { if let Ok(_) = jump().await {}else { println!("代码仓库跳转失败")}; std::process::exit(0)}
+        Select::C => { if let Ok(_) = jump(
+            "https://gitcode.com/songjiaqicode/rust-installation"
+        ).await {println!("gitcode:\nhttps://gitcode.com/songjiaqicode/rust-installation\ngitee:\nhttps://gitee.com/songjiaqicode/rust-installation")}else { println!("失败☠️") } std::process::exit(0)}
 
         /* 列出rust版本信息 */
-        Select::List => { select_cmd("是否列出 rust 版本信息? [y/n]"); if let Ok(_) = list().await {}else { println!("失败☠️") }; std::process::exit(0) }
+        Select::List => { select_cmd("是否列出 rust 版本信息? [y/n]"); if let Ok(_) = list().await {}else { println!("失败☠️") } std::process::exit(0) }
 
         /* 添加 cargo 镜像 */
-        Select::Cargo => { select_cmd("是否添加 cargo 镜像? [y/n]"); if let Ok(_) = cargo().await {}else { println!("失败☠️") }; std::process::exit(0) }
+        Select::Cargo => { select_cmd("是否添加 cargo 镜像? [y/n]"); if let Ok(_) = cargo().await {}else { println!("失败☠️") } std::process::exit(0) }
 
         /* 开启fish shell tap补全 */
-        Select::TapFish => { select_cmd("是否开启fish shell tap补全? [y/n]"); if let Ok(_) = tap_fish().await {}else { println!("失败☠️") }; std::process::exit(0) }
+        Select::TapFish => { select_cmd("是否开启fish shell tap补全? [y/n]"); if let Ok(_) = tap_fish().await {}else { println!("失败☠️") } std::process::exit(0) }
 
         /* 开启bash shell tap补全 */
-        Select::TapBash => { select_cmd("是否开启bash shell tap补全? [y/n]"); println!("暂无"); std::process::exit(0) }
+        Select::TapBash => { select_cmd("是否开启bash shell tap补全? [y/n]"); if let Ok(_) = tap_bash().await {}else { println!("失败☠️") } {}; std::process::exit(0) }
 
         /* 安装 rust nightly 版本 */
-        Select::InstallNightly => { select_cmd("是否安装 rust nightly 版本? [y/n]"); if let Ok(_) = install_nightly().await {}else { println!("失败☠️") }; std::process::exit(0) }
+        Select::InstallNightly => { select_cmd("是否安装 rust nightly 版本? [y/n]"); if let Ok(_) = install_nightly().await {}else { println!("失败☠️") } std::process::exit(0) }
 
         /* 切换到 nightly 版本 */
         Select::Nightly => { select_cmd("是否切换到 nightly 版本? [y/n]"); if let Ok(_) = nightly().await {} else { println!("失败☠️") } std::process::exit(0) }
@@ -99,7 +101,7 @@ pub async fn select(par:Select){
         Select::DocZigbuild => { select_cmd("是否查看 cargo-zigbuild 文档? [y/n]"); println!("暂无"); std::process::exit(0) }
 
         /* 删除 zigbuild 构建工具 */
-        Select::RemoveZigbuild => { select_cmd("是否删除 cargo-zigbuild 构建工具? [y/n]"); if let Ok(_) = remove_zigbuild().await {}else { println!("失败☠️") }; std::process::exit(0) }
+        Select::RemoveZigbuild => { select_cmd("是否删除 cargo-zigbuild 构建工具? [y/n]"); if let Ok(_) = remove_zigbuild().await {}else { println!("失败☠️") } std::process::exit(0) }
 
         /* 添加tauri框架 */
         Select::Tauri => { select_cmd("是否添加 tauri 框架? [y/n]"); println!("暂无"); std::process::exit(0) }
@@ -150,18 +152,20 @@ pub fn help(){
     for i in cmd { println!("{i}") } std::process::exit(0)
 }
 
-/* 代码仓库跳转 */
-pub async fn jump() -> Result<(), Box<dyn std::error::Error>> {
+/* 通用跳转 */
+pub async fn jump(https:&str) -> Result<(), Box<dyn std::error::Error>> {
     /* 跳转代码仓库 */
     #[cfg(target_os = "linux")]
-    cmd("xdg-open https://gitcode.com/songjiaqicode/rust-installation").await?;
+    cmd(&format!("xdg-open {}",https)).await?;
 
     #[cfg(target_os = "windows")]
-    Command::new("cmd").args(["/C","start","https://gitcode.com/songjiaqicode/rust-installation"]).status().await?;
+    Command::new("cmd").args(["/C","start",https]).status().await?;
 
-    /* 打印代码仓库 */
-    println!("gitcode:\nhttps://gitcode.com/songjiaqicode/rust-installation\ngitee:\nhttps://gitee.com/songjiaqicode/rust-installation"); std::process::exit(0)
+    Ok(())
 }
+
+/* 列出所有 rust 版本 */
+pub async fn list() -> Result<(), Box<dyn std::error::Error>> { cmd("rustup show").await?; Ok(()) }
 
 /* 添加 cargo 镜像<1.68版本以上> */
 pub async fn cargo() -> Result<(), Box<dyn std::error::Error>> {
@@ -190,25 +194,7 @@ index = "sparse+https://mirrors.tuna.tsinghua.edu.cn/crates.io-index/"
     Ok(())
 }
 
-/* 安装 rust nightly 版本 */
-pub async fn install_nightly() -> Result<(), Box<dyn std::error::Error>> { cmd("RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup install nightly").await?; Ok(()) }
-
-/* 列出所有 rust 版本 */
-pub async fn list() -> Result<(), Box<dyn std::error::Error>> { cmd("rustup show").await?; Ok(()) }
-
-/* 切换 rust nightly 版本 */
-pub async fn nightly() -> Result<(), Box<dyn std::error::Error>> { cmd("rustup default nightly").await?; Ok(()) }
-
-/* 删除 rust nightly 版本 */
-pub async fn remove_nightly() -> Result<(), Box<dyn std::error::Error>> { cmd("rustup toolchain uninstall nightly").await?; Ok(()) }
-
-/* 删除 zigbuild 构建工具 */
-pub async fn remove_zigbuild() -> Result<(), Box<dyn std::error::Error>> { cmd("cargo uninstall cargo-zigbuild").await?; Ok(()) }
-
-/* 切换 rust stable 版本 */
-pub async fn stable() -> Result<(), Box<dyn std::error::Error>> { cmd("rustup default stable").await?; Ok(()) }
-
-/* fish 的 tap 补全 */
+/* 开启fish shell tap补全 */
 pub async fn tap_fish() -> Result<(), Box<dyn std::error::Error>> {
     /* 判断 fish 存在性 */
     let res = Command::new("fish").arg("-v").status().await;
@@ -216,7 +202,7 @@ pub async fn tap_fish() -> Result<(), Box<dyn std::error::Error>> {
 
     /* 创建 fish tap 补全文件 */
     let file = OpenOptions::new().read(true).write(true).create(true).open(res_path(".config/fish/completions/rust-install.fish")).await;
-    let mut file = if let Ok(e) = file { println!("fish tap 文件创建成功"); e }else { println!("fish tap 文件创建失败"); std::process::exit(0) };
+    let mut file = if let Ok(e) = file { println!("fish tap 文件创建成功"); e }else { println!("fish tap 文件创建失败"); return Err("fish不存在".into()) };
 
     /* 写入内容 */
     let write = b"complete -c rust-install -f -a 'h v c list cargo tap-fish tap-bash install-nightly nightly remove-nightly stable uninstall update zigbuild doc-zigbuild remove-zigbuild tauri doc-taur remove-tauri'";
@@ -224,6 +210,32 @@ pub async fn tap_fish() -> Result<(), Box<dyn std::error::Error>> {
 
     Ok(())
 }
+
+/* 开启bash shell tap补全 */
+pub async fn tap_bash() -> Result<(), Box<dyn std::error::Error>>{
+    let res = Command::new("bash").arg("--version").status().await;
+    if let Ok(_) = res { println!("bash存在,正在创建配置文件") } else { println!("bash不存在"); return Err("bash不存在".into()) };
+
+    let file = OpenOptions::new().append(true).read(true).create(true).open(res_path(".bashrc")).await;
+    let mut file = if let Ok(e) = file { println!("bash tap 文件创建成功"); e }else { println!("bash tap 文件创建失败"); return Err("bash tap 文件创建失败".into()) };
+
+    let write = r#"complete -W "h v c list cargo tap-fish tap-bash install-nightly nightly remove-nightly stable uninstall update zigbuild doc-zigbuild remove-zigbuild tauri doc-taur remove-tauri" rust-install"#;
+    let _ = file.write_all(write.as_bytes()).await?; println!("重启终端后即可使用 bash tap补全");
+
+    Ok(())
+}
+
+/* 安装 rust nightly 版本 */
+pub async fn install_nightly() -> Result<(), Box<dyn std::error::Error>> { cmd("RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup rustup install nightly").await?; Ok(()) }
+
+/* 切换 rust nightly 版本 */
+pub async fn nightly() -> Result<(), Box<dyn std::error::Error>> { cmd("rustup default nightly").await?; Ok(()) }
+
+/* 删除 rust nightly 版本 */
+pub async fn remove_nightly() -> Result<(), Box<dyn std::error::Error>> { cmd("rustup toolchain uninstall nightly").await?; Ok(()) }
+
+/* 切换 rust stable 版本 */
+pub async fn stable() -> Result<(), Box<dyn std::error::Error>> { cmd("rustup default stable").await?; Ok(()) }
 
 /* 删除 uninstall */
 pub async fn uninstall() -> Result<(), Box<dyn std::error::Error>> { cmd(r#"rustup self uninstall"#).await?; Ok(()) }
@@ -233,6 +245,9 @@ pub async fn update() -> Result<(), Box<dyn std::error::Error>> { cmd("rustup up
 
 /* 添加 zigbuild 构建工具 */
 pub async fn zigbuild() -> Result<(), Box<dyn std::error::Error>> { cmd("cargo install --locked cargo-zigbuild").await?; Ok(()) }
+
+/* 删除 zigbuild 构建工具 */
+pub async fn remove_zigbuild() -> Result<(), Box<dyn std::error::Error>> { cmd("cargo uninstall cargo-zigbuild").await?; Ok(()) }
 
 /* 路径处理 */
 fn res_path(path:&str) -> PathBuf {
@@ -291,14 +306,14 @@ async fn cargo_bool() -> Result<PathBuf, Box<dyn std::error::Error>> {
 /* 执行命令 */
 async fn cmd(shell:&str) -> Result<(), Box<dyn std::error::Error>> {
     #[cfg(target_os = "linux")]
-    Command::new("bash").arg("-c").arg(shell)
+    Command::new("bash").arg("-C").arg(shell)
         /* 设置管道 | 临时镜像 */
         .env("RUSTUP_UPDATE_ROOT","https://mirrors.tuna.tsinghua.edu.cn/rustup/rustup")
         .env("RUSTUP_DIST_SERVER","https://mirrors.tuna.tsinghua.edu.cn/rustup")
         .status().await?;
 
     #[cfg(target_os = "windows")]
-    Command::new(r#"C:\msys64\usr\bin\bash.exe"#).args(["-c",shell])
+    Command::new(r#"C:\msys64\usr\bin\bash.exe"#).args(["-C",shell])
         .env("RUSTUP_UPDATE_ROOT","https://mirrors.tuna.tsinghua.edu.cn/rustup/rustup")
         .env("RUSTUP_DIST_SERVER","https://mirrors.tuna.tsinghua.edu.cn/rustup")
         .status().await?;
