@@ -18,10 +18,11 @@ use std::env::{args};
 
 /* 引入私有库 */
 
-#[path = "function_mod_https.rs"]
-mod function_mod_https;
+/* 参数命令处理模块 */
+#[path = "function_mod.rs"]
+mod function_mod;
 
-use function_mod_https::Select;
+use function_mod::Select;
 
 /* 内部操作 */
 
@@ -33,56 +34,41 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>>{
 
     /* 获取命令行参数 */
     for i in args().skip(1) {
-        /* i 存放的是 String */
+        /* i 存放了 String */
 
         match i.as_str() {
             /* as_str() 将 String 转化为 &str */
 
-            /* 帮助 */
-            "h" => { function_mod_https::select(Select::H).await }
+            "h" => { function_mod::select(Select::H).await }
 
-            /* 版本号 */
-            "v" => { function_mod_https::select(Select::V).await }
+            "v" => { function_mod::select(Select::V).await }
 
-            /* 代码仓库 */
-            "c" => { function_mod_https::select(Select::C).await }
+            "c" => { function_mod::select(Select::C).await }
 
-            /* 1.68 以上版本 cargo 镜像 */
-            "cargo" => { function_mod_https::select(Select::Cargo).await }
+            "cargo" => { function_mod::select(Select::Cargo).await }
 
-            /* 安装 rust nightly 版本 */
-            "install-nightly" => { function_mod_https::select(Select::InstallNightly).await }
+            "install-nightly" => { function_mod::select(Select::InstallNightly).await }
 
-            /* 安装 rust stable 版本 */
-            "install-stable" => { function_mod_https::select(Select::InstallStable).await}
+            "list" => { function_mod::select(Select::List).await }
 
-            /* 列出所有 rust 版本 */
-            "list" => { function_mod_https::select(Select::List).await }
+            "nightly" => { function_mod::select(Select::Nightly).await }
 
-            /* 切换 rust nightly 版本 */
-            "nightly" => { function_mod_https::select(Select::Nightly).await }
+            "remove-nightly" => { function_mod::select(Select::RemoveNightly).await }
 
-            /* 删除 rust nightly 版本 */
-            "remove-nightly" => { function_mod_https::select(Select::RemoveNightly).await }
+            "remove-zigbuild" => { function_mod::select(Select::RemoveZigbuild).await }
 
-            /* 删除 zigbuild 构建工具 */
-            "remove-zigbuild" => { function_mod_https::select(Select::RemoveZigbuild).await }
+            "stable" => { function_mod::select(Select::Stable).await}
 
-            /* 切换 rust stable 版本 */
-            "stable" => { function_mod_https::select(Select::Stable).await}
-
-            /* 开启 fish 的 tap 补全 */
-            #[cfg(target_os = "linux")]
-            "tap" => { function_mod_https::select(Select::Tap).await }
+            "tap" => { function_mod::select(Select::Tap).await }
 
             /* 删除 rust */
-            "uninstall" => { function_mod_https::select(Select::Uninstall).await }
+            "uninstall" => { function_mod::select(Select::Uninstall).await }
 
             /* 更新 rust */
-            "update" => { function_mod_https::select(Select::Update).await }
+            "update" => { function_mod::select(Select::Update).await }
 
             /* zigbuild 构建工具 */
-            "zigbuild" => { function_mod_https::select(Select::Zigbuild).await }
+            "zigbuild" => { function_mod::select(Select::Zigbuild).await }
 
             /* 错误命令处理 */
             _ => { println!("未定义的命令"); std::process::exit(0);}
