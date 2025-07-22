@@ -34,10 +34,7 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>>{
 
     /* 获取命令行参数 */
     for i in args().skip(1) {
-        /* i 存放了 String */
-
         match i.as_str() {
-            /* as_str() 将 String 转化为 &str */
 
             "h" => { function_mod::select(Select::H).await }
 

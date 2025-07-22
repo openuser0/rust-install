@@ -57,39 +57,39 @@ pub async fn select(par:Select){
 
         Select::V =>{ println!("1.4.0"); std::process::exit(0) }
 
-        Select::C => { if let Ok(_) = jump("gitcode.com/songjiaqicode/rust-installation").await {}else { println!("失败☠️") } std::process::exit(0)}
+        Select::C => { if let Ok(_) = jump("gitcode.com/songjiaqicode/rust-installation").await {}else { err() }}
 
-        Select::List => { select_cmd("是否列出 rust 版本信息? [y/n]"); if let Ok(_) = rustup_cli("show").await {}else { println!("失败☠️") } std::process::exit(0) }
+        Select::List => { select_cmd("是否列出 rust 版本信息? [y/n]"); if let Ok(_) = rustup_cli("show").await {}else { err() } }
 
-        Select::Cargo => { select_cmd("是否添加 cargo 镜像? [y/n]"); if let Ok(_) = cargo().await {}else { println!("失败☠️") } std::process::exit(0) }
+        Select::Cargo => { select_cmd("是否添加 cargo 镜像? [y/n]"); if let Ok(_) = cargo().await {}else { err() } }
 
-        Select::TapFish => { select_cmd("是否开启fish shell tap补全? [y/n]"); if let Ok(_) = tap_fish().await {}else { println!("失败☠️") } std::process::exit(0) }
+        Select::TapFish => { select_cmd("是否开启fish shell tap补全? [y/n]"); if let Ok(_) = tap_fish().await {}else { err() } }
 
-        Select::TapBash => { select_cmd("是否开启bash shell tap补全? [y/n]"); if let Ok(_) = tap_bash().await {}else { println!("失败☠️") } {}; std::process::exit(0) }
+        Select::TapBash => { select_cmd("是否开启bash shell tap补全? [y/n]"); if let Ok(_) = tap_bash().await {}else { err() } }
 
-        Select::InstallNightly => { select_cmd("是否安装 rust nightly 版本? [y/n]"); if let Ok(_) = rustup_cli("install nightly").await {}else { println!("失败☠️") } std::process::exit(0) }
+        Select::InstallNightly => { select_cmd("是否安装 rust nightly 版本? [y/n]"); if let Ok(_) = rustup_cli("install nightly").await {}else { err() } }
 
-        Select::Nightly => { select_cmd("是否切换到 nightly 版本? [y/n]"); if let Ok(_) = rustup_cli("default nightly").await {} else { println!("失败☠️") } std::process::exit(0) }
+        Select::Nightly => { select_cmd("是否切换到 nightly 版本? [y/n]"); if let Ok(_) = rustup_cli("default nightly").await {} else { err() } }
 
-        Select::RemoveNightly => { select_cmd("是否删除 rust nightly 版本? [y/n]"); if let Ok(_) = rustup_cli("toolchain uninstall nightly").await {} else { println!("失败☠️") }; std::process::exit(0) }
+        Select::RemoveNightly => { select_cmd("是否删除 rust nightly 版本? [y/n]"); if let Ok(_) = rustup_cli("toolchain uninstall nightly").await {} else { err() } }
 
-        Select::Stable => { select_cmd("是否切换到 stable 版本? [y/n]"); if let Ok(_) = rustup_cli("default stable").await {} else { println!("失败☠️") }; std::process::exit(0) }
+        Select::Stable => { select_cmd("是否切换到 stable 版本? [y/n]"); if let Ok(_) = rustup_cli("default stable").await {} else { err() } }
 
-        Select::Uninstall => { select_cmd("是否删除 rust? [y/n]"); if let Ok(_) = rustup_cli("self uninstall").await {}else { println!("失败☠️") }; std::process::exit(0) }
+        Select::Uninstall => { select_cmd("是否删除 rust? [y/n]"); if let Ok(_) = rustup_cli("self uninstall").await {}else { err() } }
 
-        Select::Update => { select_cmd("是否更新 rust? [y/n]"); if let Ok(_) = rustup_cli("update").await {}else { println!("失败☠️") }; std::process::exit(0) }
+        Select::Update => { select_cmd("是否更新 rust? [y/n]"); if let Ok(_) = rustup_cli("update").await {}else { err() } }
 
-        Select::Zigbuild => { select_cmd("是否添加 cargo-zigbuild 构建工具? [y/n]"); if let Ok(_) = cargo_cli("install --locked cargo-zigbuild").await {}else { println!("失败☠️") }; std::process::exit(0) }
+        Select::Zigbuild => { select_cmd("是否添加 cargo-zigbuild 构建工具? [y/n]"); if let Ok(_) = cargo_cli("install --locked cargo-zigbuild").await {}else { err() } }
 
-        Select::DocZigbuild => { select_cmd("是否查看 cargo-zigbuild 文档? [y/n]"); if let Ok(_) = jump("https://juejin.cn/post/7527206638262599706").await {}else { println!("失败☠️") } {}; std::process::exit(0) }
+        Select::DocZigbuild => { select_cmd("是否查看 cargo-zigbuild 文档? [y/n]"); if let Ok(_) = jump("https://juejin.cn/post/7527206638262599706").await {}else { err() } }
 
-        Select::RemoveZigbuild => { select_cmd("是否删除 cargo-zigbuild 构建工具? [y/n]"); if let Ok(_) = cargo_cli("uninstall cargo-zigbuild").await {}else { println!("失败☠️") } std::process::exit(0) }
+        Select::RemoveZigbuild => { select_cmd("是否删除 cargo-zigbuild 构建工具? [y/n]"); if let Ok(_) = cargo_cli("uninstall cargo-zigbuild").await {}else { err() } }
 
-        Select::Tauri => { select_cmd("是否添加 tauri 框架? [y/n]"); if let Ok(_) = cargo_cli("install create-tauri-app --locked").await {}else { println!("失败☠️") } std::process::exit(0) }
+        Select::Tauri => { select_cmd("是否添加 tauri 框架? [y/n]"); if let Ok(_) = cargo_cli("install create-tauri-app --locked").await {}else { err() } }
 
-        Select::DocTauri => { select_cmd("是否查看 tauri 文档? [y/n]"); if let Ok(_) = jump("https://v2.tauri.org.cn/start/").await {}else { println!("失败☠️") } std::process::exit(0) }
+        Select::DocTauri => { select_cmd("是否查看 tauri 文档? [y/n]"); if let Ok(_) = jump("https://v2.tauri.org.cn/start/").await {}else { err() } }
 
-        Select::RemoveTauri => { select_cmd("是否删除 tauri 框架? [y/n]"); if let Ok(_) = cargo_cli("uninstall create-tauri-app").await {} else { println!("失败☠️") } std::process::exit(0) }
+        Select::RemoveTauri => { select_cmd("是否删除 tauri 框架? [y/n]"); if let Ok(_) = cargo_cli("uninstall create-tauri-app").await {} else { err() } }
     }
 }
 
@@ -232,3 +232,6 @@ fn select_cmd(pr:&str) {
     let _ = stdin().read_line(&mut buf);
     if buf.trim() == "y" { () }else { println!("操作已取消"); std::process::exit(0); }
 }
+
+/* 通用报错 */
+fn err(){ println!("错误☠️"); std::process::exit(0) }
