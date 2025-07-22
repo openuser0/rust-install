@@ -55,7 +55,7 @@ pub async fn select(par:Select){
     match par {
         Select::H =>{ help() }
 
-        Select::V =>{ println!("1.4.0"); std::process::exit(0) }
+        Select::V =>{ println!("1.5.0"); std::process::exit(0) }
 
         Select::C => { if let Ok(_) = jump("gitcode.com/songjiaqicode/rust-installation").await {}else { err() }}
 

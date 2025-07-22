@@ -1,11 +1,10 @@
 [package]
 name = "rust-install"
-version = "1.4.0"
+version = "1.5.0"
 edition = "2024"
 
 [dependencies]
 cmd = {path = "cmd"}
 func = {path = "func"}
-iai = "0.1.1"
 tokio = { version = "1.46.1", features = ["rt-multi-thread","macros"] }
 
