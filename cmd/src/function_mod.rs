@@ -168,7 +168,7 @@ pub async fn tap_bash() -> Result<(), Box<dyn std::error::Error>>{
 /* 添加 cargo 镜像<1.68版本以上> */
 pub async fn cargo() -> Result<(), Box<dyn std::error::Error>> {
     /* 添加镜像 */
-    select_cmd("警告⚠️:重复添加镜像会覆盖现有配置,很可能破坏开发环境\n执行 nano $HOME/.cargo/config.toml 命令查看镜像是否存在\n是否添加 cargo 镜像? [y/n]");
+    select_cmd("警告⚠️:重复添加镜像会覆盖现有配置,很可能破坏开发环境\n请执行 nano $HOME/.cargo/config.toml 命令查看镜像是否存在\n是否添加 cargo 镜像? [y/n]");
     cmd(r#"mkdir -vp ${CARGO_HOME:-$HOME/.cargo}
 
 cat << EOF | tee -a ${CARGO_HOME:-$HOME/.cargo}/config.toml
@@ -197,7 +197,6 @@ fn res_path(path:&str) -> PathBuf {
     let home = var("HOME").expect("$HOME 环境变量不存在");
     let home = Path::new(&home);
     let path = home.join(path);
-
     path
 }
 
@@ -209,13 +208,11 @@ async fn cmd(shell:&str) -> Result<(), Box<dyn std::error::Error>> {
         .env("RUSTUP_UPDATE_ROOT","https://mirrors.tuna.tsinghua.edu.cn/rustup/rustup")
         .env("RUSTUP_DIST_SERVER","https://mirrors.tuna.tsinghua.edu.cn/rustup")
         .status().await?;
-
     #[cfg(target_os = "windows")]
     Command::new(r#"C:\msys64\usr\bin\bash.exe"#).args(["-c",shell])
         .env("RUSTUP_UPDATE_ROOT","https://mirrors.tuna.tsinghua.edu.cn/rustup/rustup")
         .env("RUSTUP_DIST_SERVER","https://mirrors.tuna.tsinghua.edu.cn/rustup")
         .status().await?;
-
     Ok(())
 }
 
