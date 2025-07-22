@@ -145,7 +145,7 @@ pub async fn tap_fish() -> Result<(), Box<dyn std::error::Error>> {
     /* 创建 fish tap 补全并写入内容 */
     let file = OpenOptions::new().read(true).write(true).create(true).open(res_path(".config/fish/completions/rust-install.fish")).await;
     let mut file = if let Ok(e) = file { println!("fish tap 文件创建成功"); e }else { println!("fish tap 文件创建失败"); return Err("fish不存在".into()) };
-    let write = b"complete -c rust-install -f -a 'h v c list cargo tap-fish tap-bash install-nightly nightly remove-nightly stable uninstall update zigbuild doc-zigbuild remove-zigbuild tauri doc-taur remove-tauri'";
+    let write = b"complete -c rust-install -f -a 'h v c list cargo tap-fish tap-bash install-nightly nightly remove-nightly stable uninstall update zigbuild doc-zigbuild remove-zigbuild tauri doc-tauri remove-tauri'";
     let _ = file.write_all(write).await?; println!("重启终端后即可使用 fish tap补全");
 
     Ok(())
@@ -159,7 +159,7 @@ pub async fn tap_bash() -> Result<(), Box<dyn std::error::Error>>{
 
     let file = OpenOptions::new().append(true).read(true).create(true).open(res_path(".bashrc")).await;
     let mut file = if let Ok(e) = file { println!("bash tap 文件创建成功"); e }else { println!("bash tap 文件创建失败"); return Err("bash tap 文件创建失败".into()) };
-    let write = r#"complete -W "h v c list cargo tap-fish tap-bash install-nightly nightly remove-nightly stable uninstall update zigbuild doc-zigbuild remove-zigbuild tauri doc-taur remove-tauri" rust-install"#;
+    let write = r#"complete -W "h v c list cargo tap-fish tap-bash install-nightly nightly remove-nightly stable uninstall update zigbuild doc-zigbuild remove-zigbuild tauri doc-tauri remove-tauri" rust-install"#;
     let _ = file.write_all(write.as_bytes()).await?; println!("重启终端后即可使用 bash tap补全");
 
     Ok(())
