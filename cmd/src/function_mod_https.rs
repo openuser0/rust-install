@@ -139,19 +139,19 @@ pub async fn select(par:Select){
 pub fn help(){
     /* 定义命令参数集合 */
     let cmd = vec![
-        "无参数 , 安装 rustup 并设置镜像",
+        "无参数 安装rust(自动配置镜像)\n",
 
-        "[非功能性]"
+        "[非功能性]",
         "h 帮助 ",
         "v 版本号",
         "c 代码仓库",
         "list 列出rust版本信息\n",
 
-        "[辅助功能性]"
+        "[辅助功能性]",
         "cargo 添加 cargo 镜像",
-        "<linux专属>tap-fish 开启 fish shell tap 补全",
-        "<新增>tap-bash 开启 bash shell tap 补全",
-        "<改动>install-nightly 安装 rust-nightly(每日构建) 版本",
+        "tap-fish 开启 fish shell tap 补全",
+        "tap-bash 开启 bash shell tap 补全",
+        "install-nightly 安装 rust-nightly(每日构建) 版本",
         "nightly 切换到rust-nightly版本",
         "remove-nightly 删除rust-nightly版本",
         "stable 切换到rust-stable版本",
@@ -161,12 +161,12 @@ pub fn help(){
         "[zigbuild构建工具]",
         "zigbuild 添加zigbuild构建工具",
         "doc-zigbuild 文档",
-        "remove-zigbuild  删除zigbuild",
+        "remove-zigbuild  删除zigbuild\n",
 
-        "[tauri前端框架]"
-        "tauri 添加tauri框架"
-        "doc-tauri 文档"
-        "remove-tauri 删除tauri"
+        "[tauri前端框架]",
+        "tauri 添加tauri框架",
+        "doc-tauri 文档",
+        "remove-tauri 删除tauri\n",
 
         "[移除]",
         "install-stable , 安装 rust stable 版本(默认)",
