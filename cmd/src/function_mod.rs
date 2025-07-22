@@ -63,52 +63,52 @@ pub async fn select(par:Select){
         Select::C => { if let Ok(_) = jump().await {}else { println!("代码仓库跳转失败")}; std::process::exit(0)}
 
         /* 列出rust版本信息 */
-        Select::List => { select_cmd("是否列出 rust 版本信息? [y/n]"); if let Ok(_) = list().await {}else { println!("列出所有 rust 版本失败")}; std::process::exit(0) }
+        Select::List => { select_cmd("是否列出 rust 版本信息? [y/n]"); if let Ok(_) = list().await {}else { println!("失败☠️") }; std::process::exit(0) }
 
         /* 添加 cargo 镜像 */
-        Select::Cargo => { select_cmd("是否添加 cargo 镜像? [y/n]"); if let Ok(_) = cargo().await {}else { println!("cargo 镜像添加失败")}; std::process::exit(0) }
+        Select::Cargo => { select_cmd("是否添加 cargo 镜像? [y/n]"); if let Ok(_) = cargo().await {}else { println!("失败☠️") }; std::process::exit(0) }
 
         /* 开启fish shell tap补全 */
-        Select::TapFish => { if let Ok(_) = tap_fish().await {}else { println!("fish shell tap补全开启失败") }; std::process::exit(0) }
+        Select::TapFish => { select_cmd("是否开启fish shell tap补全? [y/n]"); if let Ok(_) = tap_fish().await {}else { println!("失败☠️") }; std::process::exit(0) }
 
         /* 开启bash shell tap补全 */
-        Select::TapBash => { println!("暂无"); std::process::exit(0) }
+        Select::TapBash => { select_cmd("是否开启bash shell tap补全? [y/n]"); println!("暂无"); std::process::exit(0) }
 
         /* 安装 rust nightly 版本 */
-        Select::InstallNightly => { select_cmd("是否安装 rust nightly 版本? [y/n]"); if let Ok(_) = install_nightly().await {}else { println!("安装 rust nightly 版本失败")}; std::process::exit(0) }
+        Select::InstallNightly => { select_cmd("是否安装 rust nightly 版本? [y/n]"); if let Ok(_) = install_nightly().await {}else { println!("失败☠️") }; std::process::exit(0) }
 
         /* 切换到 nightly 版本 */
-        Select::Nightly => { select_cmd("是否切换到 nightly 版本? [y/n]"); if let Ok(_) = nightly().await {} else { println!("切换到 nightly 版本失败")}; std::process::exit(0) }
+        Select::Nightly => { select_cmd("是否切换到 nightly 版本? [y/n]"); if let Ok(_) = nightly().await {} else { println!("失败☠️") } std::process::exit(0) }
 
         /* 删除 rust nightly 版本 */
-        Select::RemoveNightly => { select_cmd("是否删除 rust nightly 版本? [y/n]"); if let Ok(_) = remove_nightly().await {} else { println!("删除 rust nightly 版本失败")}; std::process::exit(0) }
+        Select::RemoveNightly => { select_cmd("是否删除 rust nightly 版本? [y/n]"); if let Ok(_) = remove_nightly().await {} else { println!("失败☠️") }; std::process::exit(0) }
 
         /* 切换到 stable 版本 */
-        Select::Stable => { select_cmd("是否切换到 stable 版本? [y/n]"); if let Ok(_) = stable().await {} else { println!("切换到 stable 版本失败")}; std::process::exit(0) }
+        Select::Stable => { select_cmd("是否切换到 stable 版本? [y/n]"); if let Ok(_) = stable().await {} else { println!("失败☠️") }; std::process::exit(0) }
 
         /* 删除 rust */
-        Select::Uninstall => { select_cmd("是否删除 rust? [y/n]"); if let Ok(_) = uninstall().await {}else { println!("rust 删除失败")}; std::process::exit(0) }
+        Select::Uninstall => { select_cmd("是否删除 rust? [y/n]"); if let Ok(_) = uninstall().await {}else { println!("失败☠️") }; std::process::exit(0) }
 
         /* 更新 rust */
-        Select::Update => { select_cmd("是否更新 rust? [y/n]"); if let Ok(_) = update().await {}else { println!("rust 更新失败")}; std::process::exit(0) }
+        Select::Update => { select_cmd("是否更新 rust? [y/n]"); if let Ok(_) = update().await {}else { println!("失败☠️") }; std::process::exit(0) }
 
         /* 添加 zigbuild 构建工具 */
-        Select::Zigbuild => { select_cmd("是否安装 cargo-zigbuild 构建工具? [y/n]"); if let Ok(_) = zigbuild().await {}else { println!("zigbuild 添加失败")}; std::process::exit(0) }
+        Select::Zigbuild => { select_cmd("是否添加 cargo-zigbuild 构建工具? [y/n]"); if let Ok(_) = zigbuild().await {}else { println!("失败☠️") }; std::process::exit(0) }
 
         /* 文档 */
-        Select::DocZigbuild => { println!("暂无"); std::process::exit(0) }
+        Select::DocZigbuild => { select_cmd("是否查看 cargo-zigbuild 文档? [y/n]"); println!("暂无"); std::process::exit(0) }
 
         /* 删除 zigbuild 构建工具 */
-        Select::RemoveZigbuild => { select_cmd("是否删除 cargo-zigbuild 构建工具? [y/n]"); if let Ok(_) = remove_zigbuild().await {}else { println!("zigbuild 删除失败")}; std::process::exit(0) }
+        Select::RemoveZigbuild => { select_cmd("是否删除 cargo-zigbuild 构建工具? [y/n]"); if let Ok(_) = remove_zigbuild().await {}else { println!("失败☠️") }; std::process::exit(0) }
 
         /* 添加tauri框架 */
-        Select::Tauri => { println!("暂无"); std::process::exit(0) }
+        Select::Tauri => { select_cmd("是否添加 tauri 框架? [y/n]"); println!("暂无"); std::process::exit(0) }
 
         /* 文档 */
-        Select::DocTauri => { println!("暂无"); std::process::exit(0) }
+        Select::DocTauri => { select_cmd("是否查看 tauri 文档? [y/n]"); println!("暂无"); std::process::exit(0) }
 
         /* 删除tauri */
-        Select::RemoveTauri => { println!("暂无"); std::process::exit(0) }
+        Select::RemoveTauri => { select_cmd("是否删除 tauri 框架? [y/n]"); println!("暂无"); std::process::exit(0) }
     }
 }
 
@@ -219,7 +219,7 @@ pub async fn tap_fish() -> Result<(), Box<dyn std::error::Error>> {
     let mut file = if let Ok(e) = file { println!("fish tap 文件创建成功"); e }else { println!("fish tap 文件创建失败"); std::process::exit(0) };
 
     /* 写入内容 */
-    let write = b"complete -c rust-install -f -a ''";
+    let write = b"complete -c rust-install -f -a 'h v c list cargo tap-fish tap-bash install-nightly nightly remove-nightly stable uninstall update zigbuild doc-zigbuild remove-zigbuild tauri doc-taur remove-tauri'";
     let _ = file.write_all(write).await?; println!("重启终端后即可使用 fish tap补全");
 
     Ok(())
