@@ -57,39 +57,39 @@ pub async fn select(par:Select){
 
         Select::V =>{ println!("1.5.0"); std::process::exit(0) }
 
-        Select::C => { if let Ok(_) = jump("gitcode.com/songjiaqicode/rust-installation").await {}else { err() }}
+        Select::C => { if let Ok(_) = jump("gitcode.com/songjiaqicode/rust-installation").await {}else { err() } off() }
 
-        Select::List => { select_cmd("是否列出 rust 版本信息? [y/n]"); if let Ok(_) = rustup_cli("show").await {}else { err() } }
+        Select::List => { select_cmd("是否列出 rust 版本信息? [y/n]"); if let Ok(_) = rustup_cli("show").await {}else { err() } off() }
 
-        Select::Cargo => { select_cmd("是否添加 cargo 镜像? [y/n]"); if let Ok(_) = cargo().await {}else { err() } }
+        Select::Cargo => { select_cmd("是否添加 cargo 镜像? [y/n]"); if let Ok(_) = cargo().await {}else { err() } off() }
 
-        Select::TapFish => { select_cmd("是否开启fish shell tap补全? [y/n]"); if let Ok(_) = tap_fish().await {}else { err() } }
+        Select::TapFish => { select_cmd("是否开启fish shell tap补全? [y/n]"); if let Ok(_) = tap_fish().await {}else { err() } off() }
 
-        Select::TapBash => { select_cmd("是否开启bash shell tap补全? [y/n]"); if let Ok(_) = tap_bash().await {}else { err() } }
+        Select::TapBash => { select_cmd("是否开启bash shell tap补全? [y/n]"); if let Ok(_) = tap_bash().await {}else { err() } off() }
 
-        Select::InstallNightly => { select_cmd("是否安装 rust nightly 版本? [y/n]"); if let Ok(_) = rustup_cli("install nightly").await {}else { err() } }
+        Select::InstallNightly => { select_cmd("是否安装 rust nightly 版本? [y/n]"); if let Ok(_) = rustup_cli("install nightly").await {}else { err() } off() }
 
-        Select::Nightly => { select_cmd("是否切换到 nightly 版本? [y/n]"); if let Ok(_) = rustup_cli("default nightly").await {} else { err() } }
+        Select::Nightly => { select_cmd("是否切换到 nightly 版本? [y/n]"); if let Ok(_) = rustup_cli("default nightly").await {} else { err() } off() }
 
-        Select::RemoveNightly => { select_cmd("是否删除 rust nightly 版本? [y/n]"); if let Ok(_) = rustup_cli("toolchain uninstall nightly").await {} else { err() } }
+        Select::RemoveNightly => { select_cmd("是否删除 rust nightly 版本? [y/n]"); if let Ok(_) = rustup_cli("toolchain uninstall nightly").await {} else { err() } off() }
 
-        Select::Stable => { select_cmd("是否切换到 stable 版本? [y/n]"); if let Ok(_) = rustup_cli("default stable").await {} else { err() } }
+        Select::Stable => { select_cmd("是否切换到 stable 版本? [y/n]"); if let Ok(_) = rustup_cli("default stable").await {} else { err() } off() }
 
-        Select::Uninstall => { select_cmd("是否删除 rust? [y/n]"); if let Ok(_) = rustup_cli("self uninstall").await {}else { err() } }
+        Select::Uninstall => { select_cmd("是否删除 rust? [y/n]"); if let Ok(_) = rustup_cli("self uninstall").await {}else { err() } off() }
 
-        Select::Update => { select_cmd("是否更新 rust? [y/n]"); if let Ok(_) = rustup_cli("update").await {}else { err() } }
+        Select::Update => { select_cmd("是否更新 rust? [y/n]"); if let Ok(_) = rustup_cli("update").await {}else { err() } off() }
 
-        Select::Zigbuild => { select_cmd("是否添加 cargo-zigbuild 构建工具? [y/n]"); if let Ok(_) = cargo_cli("install --locked cargo-zigbuild").await {}else { err() } }
+        Select::Zigbuild => { select_cmd("是否添加 cargo-zigbuild 构建工具? [y/n]"); if let Ok(_) = cargo_cli("install --locked cargo-zigbuild").await {}else { err() } off() }
 
-        Select::DocZigbuild => { select_cmd("是否查看 cargo-zigbuild 文档? [y/n]"); if let Ok(_) = jump("https://juejin.cn/post/7527206638262599706").await {}else { err() } }
+        Select::DocZigbuild => { select_cmd("是否查看 cargo-zigbuild 文档? [y/n]"); if let Ok(_) = jump("https://juejin.cn/post/7527206638262599706").await {}else { err() } off() }
 
-        Select::RemoveZigbuild => { select_cmd("是否删除 cargo-zigbuild 构建工具? [y/n]"); if let Ok(_) = cargo_cli("uninstall cargo-zigbuild").await {}else { err() } }
+        Select::RemoveZigbuild => { select_cmd("是否删除 cargo-zigbuild 构建工具? [y/n]"); if let Ok(_) = cargo_cli("uninstall cargo-zigbuild").await {}else { err() } off() }
 
-        Select::Tauri => { select_cmd("是否添加 tauri 框架? [y/n]"); if let Ok(_) = cargo_cli("install create-tauri-app --locked").await {}else { err() } }
+        Select::Tauri => { select_cmd("是否添加 tauri 框架? [y/n]"); if let Ok(_) = cargo_cli("install create-tauri-app --locked").await {}else { err() } off() }
 
-        Select::DocTauri => { select_cmd("是否查看 tauri 文档? [y/n]"); if let Ok(_) = jump("https://v2.tauri.org.cn/start/").await {}else { err() } }
+        Select::DocTauri => { select_cmd("是否查看 tauri 文档? [y/n]"); if let Ok(_) = jump("https://v2.tauri.org.cn/start/").await {}else { err() } off() }
 
-        Select::RemoveTauri => { select_cmd("是否删除 tauri 框架? [y/n]"); if let Ok(_) = cargo_cli("uninstall create-tauri-app").await {} else { err() } }
+        Select::RemoveTauri => { select_cmd("是否删除 tauri 框架? [y/n]"); if let Ok(_) = cargo_cli("uninstall create-tauri-app").await {} else { err() } off() }
     }
 }
 
@@ -97,13 +97,11 @@ pub async fn select(par:Select){
 pub fn help(){
     let cmd = vec![
         "无参数 安装rust(自动配置镜像)\n",
-
         "[非功能性]",
         "h      帮助",
         "v      版本号",
         "c      代码仓库",
         "list   列出rust版本信息\n",
-
         "[辅助性]",
         "cargo              添加cargo镜像",
         "tap-fish           开启fish shell tap补全",
@@ -114,18 +112,15 @@ pub fn help(){
         "stable             切换到rust-stable版本",
         "uninstall          删除rust",
         "update             更新rust\n",
-
         "[zigbuild构建工具]",
         "zigbuild           添加zigbuild构建工具",
         "doc-zigbuild       文档",
         "remove-zigbuild    删除zigbuild\n",
-
         "[tauri前端框架]",
         "tauri          添加tauri框架",
         "doc-tauri      文档",
         "remove-tauri   删除tauri\n",
     ];
-
     for i in cmd { println!("{i}") } std::process::exit(0)
 }
 
@@ -232,6 +227,9 @@ fn select_cmd(pr:&str) {
     let _ = stdin().read_line(&mut buf);
     if buf.trim() == "y" { () }else { println!("操作已取消"); std::process::exit(0); }
 }
+
+/* 通用关闭 */
+fn off(){ std::process::exit(0) }
 
 /* 通用报错 */
 fn err(){ println!("错误☠️"); std::process::exit(0) }
