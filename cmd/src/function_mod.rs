@@ -208,6 +208,8 @@ async fn cmd(shell:&str) -> Result<(), Box<dyn std::error::Error>> {
         .env("RUSTUP_UPDATE_ROOT","https://mirrors.tuna.tsinghua.edu.cn/rustup/rustup")
         .env("RUSTUP_DIST_SERVER","https://mirrors.tuna.tsinghua.edu.cn/rustup")
         .status().await?;
+
+    Ok(())
 }
 
 /* 通用选择 */
