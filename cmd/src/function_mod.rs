@@ -174,13 +174,13 @@ pub async fn cargo() -> Result<(), Box<dyn std::error::Error>> {
 
 cat << EOF | tee -a ${CARGO_HOME:-$HOME/.cargo}/config.toml
 [source.crates-io]
-replace-with = 'mirror'
+replace-with = 'ustc'
 
-[source.mirror]
-registry = "sparse+https://mirrors.tuna.tsinghua.edu.cn/crates.io-index/"
+[source.ustc]
+registry = "sparse+https://mirrors.ustc.edu.cn/crates.io-index/"
 
-[registries.mirror]
-index = "sparse+https://mirrors.tuna.tsinghua.edu.cn/crates.io-index/"
+[registries.ustc]
+index = "sparse+https://mirrors.ustc.edu.cn/crates.io-index/"
 EOF"#).await?;
 
     Ok(())
