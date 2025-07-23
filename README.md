@@ -1,6 +1,6 @@
 # 介绍
 
-新手友好的rust管理工具,可以简单的安装并管理rust
+一站式rust管理工具,一键进行 **rust** **社区工具** 安装,节约你的时间,免去无意义的折腾
 
 # 开发环境
 
@@ -14,7 +14,7 @@ ide: Rust Rover
 
 # 已知问题
 
-暂未发现,如果有请提issue
+不支持 macos
 
 # 功能介绍
 
@@ -22,6 +22,4 @@ ide: Rust Rover
 
 # 使用帮助
 
-下载好预编译版本后执行 **sudo cp 程序位置 /usr/local/bin/** 即可完成安装
-
-不会安装可以看看教程视频: https://www.bilibili.com/video/BV1H2gazqEqm/
+教程视频: https://www.bilibili.com/video/BV1H2gazqEqm/
